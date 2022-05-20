@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="সি++ প্রোগ্রামিং টিপস: পর্ব ১" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        সি++ প্রোগ্রামিং টিপস: পর্ব ১ | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">
+                    Minhaz
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">সি++ প্রোগ্রামিং টিপস: পর্ব ১</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 11 Oct, 2015 in snippets</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <p>আজকাল পড়াশোনার কাজে হোক, রিসার্চের কাজে হোক, জীবন চালাতে হোক প্রোগ্রামিং একটা অবিচ্ছেদ্য অংশ হয়ে গেছে।  তবে প্রোগ্রামিং মানে শুধু ল্যাংগুয়েজের সিনট্যাক্স জেনে Hello World প্রিন্ট করা নয়, প্রোগ্রামিং মানে একটা কনসেপ্ট, একটা প্যারাডাইম, একটা আর্ট। কাজেই প্রোগ্রামিং শিখতে হলে কোডিং এর বাইরেও নিয়ম, শৃঙ্খলা, স্টাইল, বিন্যাস শেখা দরকার। এসবের কম্বিনেশনে প্রোগ্রামিং হয়ে উঠবে একটি শিল্প।</p>
+<p>আমার প্রিয় ল্যাংগুয়েজ সি++ বলে সি++ এর জনক <a href="http://www.stroustrup.com/">Bjarne Stroustrup</a> এর A Tour of C++ বইটি থেকে নিয়মিত কিছু লাইন ব্যাখা করবো যেগুলো শুধু সি++ নয়, অন্যান্য প্রোগ্রামিং ল্যাংগুয়েজেও এপ্লাই করলে কোডের সৌন্দর্য বেড়ে যাবে বহুগুণ।</p>
+<p>তো শুরু করা যাক।</p>
+<h2>Focus on programming techniques, not on language features</h2>
+<p>প্রায়ই দেখা যায় ল্যাংগুয়েজ শেখার সময় স্টুডেন্টরা আগে হিসাব নিকাশ করা শুরু করে, কোনটা শিখা সহজ, কোনটা শিখলে ভাল কাজ পাওয়া যাবে, কোনটার কদর বেশী, কোনটায় কাজ করে আরাম, কোনটায় ফিচার বেশী ইত্যাদি। হ্যা, অবশ্যই এমন একটা ল্যাংগুয়েজ জানতে হবে যেটা জনপ্রিয়। যেমন কেও যদি ২০১৫ সালে জাভার বদলে ফরট্রান কিংবা বেসিক নিয়ে পড়ে থাকতে চায় তাহলে অবশ্যই তাকে বর্তমান চাহিদা নিয়ে ভাবতে হবে। কিন্তু ফিচারই সব নয়। একটা ল্যাংগুয়েজ শিখতে হলে দেখতে হবে ল্যাংগুয়েজটার স্টাইল কি, কিভাবে সেটা ইউজ করা যায়, কি কি টেকনিক এপ্লাই করা যায় ওই ল্যাংগুয়েজ দিয়ে ইত্যাদি।</p>
+<p>ফিচার কিংবা সিনট্যাক্স দিয়ে ল্যাংগুয়েজ বিচার না করাই ভাল। কারণ প্রতিটা ল্যাংগুয়েজই তৈরী হয়েছে বিভিন্ন প্রয়োজনে। সব ল্যাংগুয়েজেরই সুবিধা অসুবিধা আছে। আর কর্মক্ষেত্রে যার যেটা দরকার সে সেটাই ব্যাবহার করবে। কাজেই প্রোগ্রামিং টেকনিকের দিকে জোর দিতে হবে, ল্যাংগুয়েজ ফিচার নয়।</p>
+<h2>A function should perform a single logical operation</h2>
+<p>প্রোগ্রামিং করার সময় কাজগুলোকে মডিউল আকারে ভাগ করার জন্য ফাংশন ব্যাবহার করা হয়। তাছাড়া <code>DRY (Don't Repeat Yourself)</code> কনসেপ্টটিও এপ্লাই করার জন্য ফাংশন জিনিসটা জরুরী।</p>
+<p>যেহেতু ফাংশনের উদ্দেশ্যই হল মডিউলার প্রোগ্রামিং, তাই ফাংশনকেও যতটা সম্ভব ছোট, সহজ এবং একটি লজিকাল অপারেশন করা উচিত।</p>
+<p>যেমন ধরে নিই আমরা একটি প্রোগ্রাম লিখবো যেটা ১০টি নম্বর ইনপুট নিবে, যোগ করবে এবং প্রিন্ট করে দেখাবে। সাধারণভাবে নিচের মত কোড করলেই চলে।</p>
+<p>{% highlight cpp %}</p>
+<h1>include <iostream></h1>
+<p>using namespace std;</p>
+<p _="%" endhighlight="endhighlight">int main()
+{
+    int numbers[10];
+    int sum = 0;
+    /<strong> step 1 </strong>/
+    cout &lt;&lt; "Enter the numbers" &lt;&lt; endl;
+    for(int i=0; i&lt;10; i++)
+        cin &gt;&gt; numbers[i];
+    /<strong> step 2 </strong>/
+    cout &lt;&lt; "Printing the numbers" &lt;&lt; endl;
+    for(int i=0; i&lt;10; i++)
+        cout &lt;&lt; numbers[i] &lt;&lt; endl;
+    /<strong> step 3 </strong>/
+    for(int i=0; i&lt;10; i++)
+         sum += numbers[i];
+    cout &lt;&lt; "Sum of the numbers: " &lt;&lt; sum &lt;&lt; endl;
+    return 0;
+}</p>
+<p>এখন আমরা যদি এই কোডের তিনটি কাজকে তিনটি ফাংশনে ভাগ করে ফেলতে পারি। কিভাবে? এইরকম একটি উদাহরণ দেওয়া যেতে পারে।</p>
+<p>{% highlight cpp %}</p>
+<h1>include <iostream></h1>
+<p>using namespace std;</p>
+<p>void input(int *numbers)
+{
+    cout &lt;&lt; "Enter the numbers" &lt;&lt; endl;
+    for(int i=0; i&lt;10; i++)
+        cin &gt;&gt; numbers[i];
+}</p>
+<p>void output(int *numbers)
+{
+    cout &lt;&lt; "Printing the numbers" &lt;&lt; endl;
+    for(int i=0; i&lt;10; i++)
+        cout &lt;&lt; numbers[i] &lt;&lt; endl;
+}</p>
+<p>void sum(int *numbers)
+{
+    int sum = 0;
+    for(int i=0; i&lt;10; i++)
+         sum += numbers[i];
+    cout &lt;&lt; "Sum of the numbers: " &lt;&lt; sum &lt;&lt; endl;
+}</p>
+<p _="%" endhighlight="endhighlight">int main()
+{
+    int numbers[10];
+    input(numbers);
+    output(numbers);
+    sum(numbers);
+    return 0;
+}</p>
+<p>দেখেই বোঝা যাচ্ছে যে ফাংশনে ভাগ করে দেওয়ার ফলে <code>main</code> ফাংশনে কোডের পরিমাণ কমে গেছে। সেই সাথে অপারেশনগুলো ফাংশনে ভাগ করায় একটি অপারেশনের সাথে অন্য অপারেশনের সম্পর্ক নেই এবং ডাটার এনক্যাপসুলেশন ভাল হয়েছে।</p>
+<h2>Keep functions short</h2>
+<p>যেহেতু ফাংশনের উদ্দেশ্য প্রোগ্রামকে মডিউলার করা, তাই বড় বড় ফাংশন না লিখে ছোট ছোট ফাংশন লেখা উচিত। ফলে প্রোগ্রামের জটিলতা কমে, পড়তে ও বুঝতে সুবিধা হয়। যেমন আমরা আগের উদাহরণটাই রিভিউ করি। ধরে নিলাম মূল প্রোগ্রামটি নিচের মত করে ফাংশন দিয়ে ইমপ্লিমেন্ট করা হল।</p>
+<p>{% highlight cpp %}</p>
+<h1>include <iostream></h1>
+<p>using namespace std;</p>
+<p>void task()
+{
+    int numbers[10];
+    int sum = 0;
+    cout &lt;&lt; "Enter the numbers" &lt;&lt; endl;
+    for(int i=0; i&lt;10; i++)
+        cin &gt;&gt; numbers[i];
+    cout &lt;&lt; "Printing the numbers" &lt;&lt; endl;
+    for(int i=0; i&lt;10; i++)
+        cout &lt;&lt; numbers[i] &lt;&lt; endl;
+    for(int i=0; i&lt;10; i++)
+         sum += numbers[i];
+    cout &lt;&lt; "Sum of the numbers: " &lt;&lt; sum &lt;&lt; endl;
+}</p>
+<p _="%" endhighlight="endhighlight">int main()
+{
+    task();
+    return 0;
+}</p>
+<p>এখানে ফাংশন দিয়ে main এ অপারেশন কমিয়ে ফেললেও আসল উদ্দেশ্য কিন্তু বাস্তবায়িত হয়নি কারণ task ফাংশনটির সাইজ বেশী বড় হয়েছে যা আরো কমিয়ে ফেলা সম্ভব।</p>
+<h2>Use overloading when functions perform conceptually the same task on different types</h2>
+<p>ওভারলোডিং, সি++ এর একটি মজার ফিচার। ফাংশন ওভারলোডিং দিয়ে একই নামে একাধিক ফাংশন তৈরী করা যায় শুধুমাত্র প্যারামিটার টাইপ, কাউন্ট বদলিয়ে।</p>
+<p>যেমন ধরা যাক আমাদের এমন কয়েকটা ফাংশন দরকার যেগুলো দিয়ে স্ট্রিং, ইনটেজার, রিয়াল নাম্বার প্রিন্ট করা যাবে। তাহলে আমরা যদি নিচের মত ফাংশন তৈরী করি,</p>
+<p _="%" endhighlight="endhighlight">{% highlight cpp %}
+void print_string(string str)
+void print_int(int number)
+void print_real(double real)</p>
+<p>তাহলে ইউজারকে প্রতিটা টাইপের জন্য ফাংশনের নাম মনে রাখতে হবে যা আসলেই ঝামেলার কাজ। যদি একটা জেনেরিক নাম দেওয়া হয় এবং ওভারলোডিং এপ্লাই করা হয়, তাহলে এই সমস্যা থেকে মুক্তি পাওয়া সম্ভব। যেমন -</p>
+<p>{% highlight cpp %}</p>
+<h1>include <iostream></h1>
+<p>using namespace std;</p>
+<p>void print(string str)
+{
+    cout &lt;&lt; "Got a string, value is " &lt;&lt; str &lt;&lt; endl;
+}</p>
+<p>void print(int number)
+{
+    cout &lt;&lt; "Got an integer number, value is " &lt;&lt; number &lt;&lt; endl;
+}</p>
+<p>void print(double real)
+{
+    cout &lt;&lt; "Got a real number, value is " &lt;&lt; real &lt;&lt; endl;
+}</p>
+<p _="%" endhighlight="endhighlight">int main()
+{
+    print("hello");
+    print(42);
+    print(3.14159);
+    return 0;
+}</p>
+<p>এইখানে কিন্তু তিনরকম টাইপের জন্য একই ফাংশন নেম print ব্যাবহার করা হচ্ছে। ফলে ইউজারকে টাইপ নিয়ে মাথা ঘামাতে হচ্ছেনা, শুধু ফাংশনে প্যারামিটার পাঠিয়ে দিলেই হচ্ছে।</p>
+<h2>Avoid "magic constants" use symbolic constants</h2>
+<p>ম্যাজিক কনসট্যান্ট মানে প্রোগ্রামের ভেতর সরাসরি নম্বর ধ্রুবক আকারে হার্ডকোড করে বসিয়ে দেওয়া। আর সিম্বলিক কনসট্যান্ট মানে একটা রেফারেন্স কনসট্যান্টকে পয়েন্ট করে ব্যাবহার করা। একটা উদাহরণ দিলে বিষয়টা ক্লিয়ার হবে।</p>
+<p>ধরে নিই আমাদের একটা প্রোগ্রাম লাগবে যেটা ইউএস ডলার থেকে বাংলাদেশী টাকায় কনভার্ট করতে পারে। সাধারণত ডলার ভ্যালুর সাথে কনভার্শন রেট গুণ করলেই কাজটা করা যায়। একটা ডেমো প্রোগ্রাম দেখা যাক।</p>
+<p>{% highlight cpp %}</p>
+<h1>include <iostream></h1>
+<p>using namespace std;</p>
+<p _="%" endhighlight="endhighlight">int main()
+{
+    int dollar0 = 99;
+    cout &lt;&lt; dollar0 &lt;&lt; " USD = " &lt;&lt; dollar0 * 78 &lt;&lt; " BDT" &lt;&lt; endl;
+    int dollar1 = 1200;
+    cout &lt;&lt; dollar1 &lt;&lt; " USD = " &lt;&lt; dollar1 * 78 &lt;&lt; " BDT" &lt;&lt; endl;
+    int dollar2 = 499;
+    cout &lt;&lt; dollar2 &lt;&lt; " USD = " &lt;&lt; dollar2 * 78 &lt;&lt; " BDT" &lt;&lt; endl;
+    return 0;
+}</p>
+<p>এই প্রোগ্রামে 99, 1200, 499 তিনটি ভ্যালু BDT তে কনভার্ট করা হয়েছে 78 দিয়ে গুণ করে। এই প্রোগ্রামে একটাই সমস্যা, সেটা হল কনভার্শন স্টেটমেন্ট বেশী হলে 78 সংখ্যাটা বারবার লিখতে হবে। সেই সাথে কোন কারণে কনভার্শন রেট 78 থেকে কমে 76 কিংবা বেড়ে 80 হলেও প্রতিটা লাইনের জন্য এই মানটা বদলাতে হবে। এইরকম ম্যাজিক কনসট্যান্ট বাদ দিয়ে আমরা সিম্বোলিক কনসট্যান্ট বসাতে পারি। কিভাবে? এইযে একটা উদাহরণ।</p>
+<p>{% highlight cpp %}</p>
+<h1>include <iostream></h1>
+<p>using namespace std;</p>
+<h1>define USD_TO_BDT 78</h1>
+<p _="%" endhighlight="endhighlight">int main()
+{
+    int dollar0 = 99;
+    cout &lt;&lt; dollar0 &lt;&lt; " USD = " &lt;&lt; dollar0 * USD_TO_BDT &lt;&lt; " BDT" &lt;&lt; endl;
+    int dollar1 = 1200;
+    cout &lt;&lt; dollar1 &lt;&lt; " USD = " &lt;&lt; dollar1 * USD_TO_BDT &lt;&lt; " BDT" &lt;&lt; endl;
+    int dollar2 = 499;
+    cout &lt;&lt; dollar2 &lt;&lt; " USD = " &lt;&lt; dollar2 * USD_TO_BDT &lt;&lt; " BDT" &lt;&lt; endl;
+    return 0;
+}</p>
+<p>এখানে একটা সিম্বোলিক কনসট্যান্ট USD_TO_BDT ব্যাবহার করা হয়েছে। ফলে কোনরকম চেঞ্জ চাইলে USD_TO_BDT এইটার মান বদলে দিলেই চলবে। প্রতি লাইনে মান বদলানোর প্রয়োজন নেই।</p>
+<h2>Declare one name (only) per declaration</h2>
+<p>এই পয়েন্টটা সম্ভব সবার শুরুতে দেওয়া উচিত ছিল।</p>
+<p>স্টুডেন্টদের প্রোগ্রামিং শেখানোর সময় ভেরিয়েবল ডিক্লেয়ার করা শেখানো হয় কিন্তু ভেরিয়েবলের নেমিং কনভেনশন কিংবা ডিক্লেয়ারেশন পলিসি নিয়ে কিছুই বলা হয়না। একটা উদাহরণ দেই।</p>
+<p>যদি কাওকে একটা প্রোগ্রাম করতে বলা হয় যে দুটি নম্বর নাও, তাদের যোগ বিয়োগ গুণ আর ভাগ ফল বের করো, তারপর গড় বের করে সংখ্যা দুটির স্কয়ারের যোগফল বের করো। তাহলে অনেকেই ভেরিয়েবল ডিক্লেয়ার করে এভাবে।</p>
+<p _="%" endhighlight="endhighlight">{% highlight cpp %}
+float a,b,c,add,sub,mul,div,avg,sqr;</p>
+<p>আদতে এই লাইনটিতে কোন সিনট্যাক্স এরর নাই, এরর হল স্টাইলে। এক লাইনে সবগুলো ভেরিয়েবল ডিক্লেয়ার করার অভ্যাস বাদ দিতে হবে। কেননা এতে কোড দেখতে খুবই বাজে লাগে, লাইনগুলোর সাইজ অতিরিক্ত বড় হয় (কিছু ক্ষেত্রে ৮০ কারেকটার পার হয়ে যায়) আর ভুলের সম্ভাবনা তো আছেই।</p>
+<p>তাই ভেরিয়েবল ডিক্লেয়ারেশন যদি আলাদা আলাদা লাইনে এবং রিজনেবল নাম দিয়ে করা যায়, তাহলে দেখতে সুন্দর লাগে, ভুল করার সম্ভাবনাও কমে। যেমন</p>
+<p>{% highlight cpp %}
+float a; // there you go
+float b;
+float c; // yolo</p>
+<p>float add;
+float sub;
+float mul;
+float div; // not done yet</p>
+<p _="%" endhighlight="endhighlight">float avg
+float sqr; // done</p>
+<p>হয়ত কয়েক লাইন বেশী লিখতে হবে, কিন্তু এই স্টাইল ফলো করলে কোড অন্যের জন্য বুঝতে সহজ হয়, ডকুমেন্টেশন ও কমেন্টিং করার কাজটাও সহজে করা যায়।</p>
+<p>আজকের মত এপর্যন্তই থাক। আগামী পর্বে আরো বিষয় নিয়ে লিখবো। সাথেই থাকুন।</p>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux.html">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets.html">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia.html">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos.html">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android.html">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt.html">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware.html">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt.html">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database.html">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws.html">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes.html">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

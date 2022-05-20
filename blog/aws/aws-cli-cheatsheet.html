@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="AWS CLI Cheatsheet" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        AWS CLI Cheatsheet | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">
+                    Minhaz
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">AWS CLI Cheatsheet</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 28 Mar, 2020 in aws</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <p>I heavily rely on CLI tools rather than GUI/Web interface. AWS CLI is a great tool to manage AWS resources across different accounts, regions and environments.</p>
+<p>I have published a curated list of frequent AWS commands that might come handy. Feel free to star it, fork it or send pull request.</p>
+<blockquote>
+<p><a href="https://github.com/mdminhazulhaque/aws-cli-cheatsheet">mdminhazulhaque/aws-cli-cheatsheet</a></p>
+</blockquote>
+<h3>Tools Required</h3>
+<ul>
+<li>aws https://aws.amazon.com/cli/</li>
+<li>jq https://stedolan.github.io/jq/</li>
+</ul>
+<p>Disclaimer: All Resource, Account, ARN, Hostname etc are generated using <a href="https://faker.readthedocs.io/en/master">Faker</a>. They do not match any real user data.</p>
+<h3>Table of Contents</h3>
+<ul>
+<li><a href="#ec2">EC2</a><ul>
+<li><a href="#list-instance-id-type-and-name">List Instance ID, Type and Name</a></li>
+<li><a href="#list-instances-with-public-ip-address-and-name">List Instances with Public IP Address and Name</a></li>
+<li><a href="#list-of-vpcs-and-cidr-ip-block">List of VPCs and CIDR IP Block</a></li>
+<li><a href="#list-of-subnets-for-a-vpc">List of Subnets for a VPC</a></li>
+<li><a href="#list-of-security-groups">List of Security Groups</a></li>
+<li><a href="#print-security-groups-for-an-instance">Print Security Groups for an Instance</a></li>
+<li><a href="#edit-security-groups-of-an-instance">Edit Security Groups of an Instance</a></li>
+<li><a href="#print-security-group-rules-as-fromaddress-and-toport">Print Security Group Rules as FromAddress and ToPort</a></li>
+<li><a href="#add-rule-to-security-group">Add Rule to Security Group</a></li>
+<li><a href="#delete-rule-from-security-group">Delete Rule from Security Group</a></li>
+<li><a href="#edit-rules-of-security-group">Edit Rules of Security Group</a></li>
+<li><a href="#delete-security-group">Delete Security Group</a></li>
+</ul>
+</li>
+<li><a href="#s3">S3</a><ul>
+<li><a href="#list-buckets">List Buckets</a></li>
+<li><a href="#list-files-in-a-bucket">List Files in a Bucket</a></li>
+<li><a href="#create-bucket">Create Bucket</a></li>
+<li><a href="#delete-bucket">Delete Bucket</a></li>
+<li><a href="#download-s3-object-to-local">Download S3 Object to Local</a></li>
+<li><a href="#upload-local-file-as-s3-object">Upload Local File as S3 Object</a></li>
+<li><a href="#delete-s3-object">Delete S3 Object</a></li>
+<li><a href="#download-bucket-to-local">Download Bucket to Local</a></li>
+<li><a href="#upload-local-directory-to-bucket">Upload Local Directory to Bucket</a></li>
+<li><a href="#share-s3-object-without-public-access">Share S3 Object without Public Access</a></li>
+</ul>
+</li>
+<li><a href="#api-gateway">API Gateway</a><ul>
+<li><a href="#list-of-api-gateway-ids-and-names">List of API Gateway IDs and Names</a></li>
+<li><a href="#list-of-api-gateway-keys">List of API Gateway Keys</a></li>
+<li><a href="#list-api-gateway-domain-names">List API Gateway Domain Names</a></li>
+<li><a href="#list-of-resources-for-api-gateway">List of Resources for API Gateway</a></li>
+<li><a href="#find-lambda-for-api-gateway-resource">Find Lambda for API Gateway Resource</a></li>
+</ul>
+</li>
+<li><a href="#elb">ELB</a><ul>
+<li><a href="#list-of-elb-hostnames">List of ELB Hostnames</a></li>
+<li><a href="#list-of-elb-arns">List of ELB ARNs</a></li>
+<li><a href="#list-of-elb-target-group-arns">List of ELB Target Group ARNs</a></li>
+<li><a href="#find-instances-for-a-target-group">Find Instances for a Target Group</a></li>
+</ul>
+</li>
+<li><a href="#rds">RDS</a><ul>
+<li><a href="#list-of-db-clusters">List of DB Clusters</a></li>
+<li><a href="#list-of-db-instances">List of DB Instances</a></li>
+<li><a href="#take-db-instance-snapshot">Take DB Instance Snapshot</a></li>
+<li><a href="#take-db-cluster-snapshot">Take DB Cluster Snapshot</a></li>
+</ul>
+</li>
+<li><a href="#elasticache">ElastiCache</a><ul>
+<li><a href="#list-of-elasticache-machine-type-and-name">List of ElastiCache Machine Type and Name</a></li>
+<li><a href="#list-of-elasticache-replication-groups">List of ElastiCache Replication Groups</a></li>
+<li><a href="#list-of-elasticache-snapshots">List of ElastiCache Snapshots</a></li>
+<li><a href="#create-elasticache-snapshot">Create ElastiCache Snapshot</a></li>
+<li><a href="#delete-elasticache-snapshot">Delete ElastiCache Snapshot</a></li>
+<li><a href="#scale-updown-elasticache-replica">Scale Up/Down ElastiCache Replica</a></li>
+</ul>
+</li>
+<li><a href="#lambda">Lambda</a><ul>
+<li><a href="#list-of-lambda-functions-runtime-and-memory">List of Lambda Functions, Runtime and Memory</a></li>
+<li><a href="#list-of-lambda-layers">List of Lambda Layers</a></li>
+<li><a href="#list-of-source-event-for-lambda">List of Source Event for Lambda</a></li>
+<li><a href="#download-lambda-code">Download Lambda Code</a></li>
+</ul>
+</li>
+<li><a href="#cloudwatch">Cloudwatch</a><ul>
+<li><a href="#list-of-cloudwatch-alarms-and-status">List of CloudWatch Alarms and Status</a></li>
+<li><a href="#create-alarm-for-ec2-high-cpuutilization">Create Alarm for EC2 High CPUUtilization</a></li>
+<li><a href="#create-alarm-for-ec2-high-statuscheckfailed_instance">Create Alarm for EC2 High StatusCheckFailed_Instance</a></li>
+</ul>
+</li>
+<li><a href="#route53">Route53</a><ul>
+<li><a href="#list-domains">List Domains</a></li>
+<li><a href="#list-records-for-a-domain-zone">List Records for a Domain (Zone)</a></li>
+</ul>
+</li>
+<li><a href="#sns">SNS</a><ul>
+<li><a href="#list-of-sns-topics">List of SNS Topics</a></li>
+<li><a href="#list-of-sns-topic-and-related-subscriptions">List of SNS Topic and related Subscriptions</a></li>
+<li><a href="#publish-to-sns-topic">Publish to SNS Topic</a></li>
+</ul>
+</li>
+<li><a href="#dynamodb">DynamoDB</a><ul>
+<li><a href="#list-of-dynamodb-tables">List of DynamoDB Tables</a></li>
+<li><a href="#get-all-items-from-a-table">Get All Items from a Table</a></li>
+<li><a href="#get-item-count-from-a-table">Get Item Count from a Table</a></li>
+<li><a href="#get-item-using-key">Get Item using Key</a></li>
+<li><a href="#get-specific-fields-from-an-item">Get Specific Fields from an Item</a></li>
+<li><a href="#delete-item-using-key">Delete Item using Key</a></li>
+</ul>
+</li>
+<li><a href="#sqs">SQS</a><ul>
+<li><a href="#list-queues">List Queues</a></li>
+<li><a href="#create-queue">Create Queue</a></li>
+<li><a href="#count-messages-in-queue">Count Messages in Queue</a></li>
+<li><a href="#send-message">Send Message</a></li>
+<li><a href="#receive-message">Receive Message</a></li>
+<li><a href="#delete-message">Delete Message</a></li>
+<li><a href="#purge-queue">Purge Queue</a></li>
+<li><a href="#delete-queue">Delete Queue</a></li>
+</ul>
+</li>
+<li><a href="#cloudfront">CloudFront</a><ul>
+<li><a href="#list-of-cloudfront-distributions-and-origins">List of CloudFront Distributions and Origins</a></li>
+<li><a href="#create-cache-invalidation">Create Cache Invalidation</a></li>
+<li><a href="#check-cache-invalidation-status">Check Cache Invalidation Status</a></li>
+</ul>
+</li>
+<li><a href="#amplify">Amplify</a><ul>
+<li><a href="#list-of-amplify-apps-and-source-repository">List of Amplify Apps and Source Repository</a></li>
+</ul>
+</li>
+<li><a href="#cognito">Cognito</a><ul>
+<li><a href="#list-of-user-pool-ids-and-names">List of User Pool IDs and Names</a></li>
+<li><a href="#list-of-phone-and-email-of-all-users">List of Phone and Email of All Users</a></li>
+</ul>
+</li>
+<li><a href="#iam-user">IAM User</a><ul>
+<li><a href="#list-of-userid-and-username">List of UserId and UserName</a></li>
+<li><a href="#get-single-user">Get Single User</a></li>
+<li><a href="#add-user">Add User</a></li>
+<li><a href="#delete-user">Delete User</a></li>
+<li><a href="#list-access-keys-for-user">List Access Keys for User</a></li>
+<li><a href="#delete-access-key-for-user">Delete Access Key for User</a></li>
+<li><a href="#activatedeactivate-access-key-for-user">Activate/Deactivate Access Key for User</a></li>
+<li><a href="#generate-new-access-key-for-user">Generate New Access Key for User</a></li>
+</ul>
+</li>
+<li><a href="#iam-group">IAM Group</a><ul>
+<li><a href="#list-groups">List Groups</a></li>
+<li><a href="#adddelete-groups">Add/Delete Groups</a></li>
+<li><a href="#list-of-policies-and-arns">List of Policies and ARNs</a></li>
+<li><a href="#list-of-usergrouproles-for-a-policy">List of User/Group/Roles for a Policy</a></li>
+<li><a href="#list-policies-for-a-group">List Policies for a Group</a></li>
+<li><a href="#add-policy-to-a-group">Add Policy to a Group</a></li>
+<li><a href="#add-user-to-a-group">Add User to a Group</a></li>
+<li><a href="#remove-user-from-a-group">Remove User from a Group</a></li>
+<li><a href="#list-users-in-a-group">List Users in a Group</a></li>
+<li><a href="#list-groups-for-a-user">List Groups for a User</a></li>
+<li><a href="#attachdetach-policy-to-a-group">Attach/Detach Policy to a Group</a></li>
+</ul>
+</li>
+</ul>
+<h3>Pro Tip!</h3>
+<p>If you have multiple AWS Accounts, you can use bash alias like the following. So you no longer need to pass <code>--profile</code> to <code>aws</code> tool.</p>
+<pre><code class="language-bash">alias aws-prod=&quot;aws --profile work-prod&quot;
+alias aws-dev=&quot;aws --profile work-dev&quot;
+alias aws-self=&quot;aws --profile personal&quot;
+alias aws=&quot;aws --profile work-dev&quot;
+</code></pre>
+<p>To format <code>aws</code> command output into tables, you can pipe output to <code>column -t</code>.</p>
+<pre><code># aws ec2 describe-instances | jq ...
+i-0f112d652ecf13dac c3.x2large fisher.com
+i-0b3b5128445a332db t2.nano robinson.com
+
+# aws ec2 describe-instances | jq ... | column -t
+i-0f112d652ecf13dac  c3.x2large  fisher.com
+i-0b3b5128445a332db  t2.nano     robinson.com
+</code></pre>
+<h2>EC2</h2>
+<h4>List Instance ID, Type and Name</h4>
+<pre><code class="language-bash">aws ec2 describe-instances | jq -r '.Reservations[].Instances[]|.InstanceId+&quot; &quot;+.InstanceType+&quot; &quot;+(.Tags[] | select(.Key == &quot;Name&quot;).Value)'
+i-0f112d652ecf13dac  c3.xlarge  fisher.com
+i-0b3b5128445a332db  t2.nano    robinson.com
+i-0d1c1cf4e980ac593  t2.micro   nolan.com
+i-004ee6b792c3b6914  t2.nano    grimes-green.net
+i-00f11e8e33c971058  t2.nano    garrett.com
+</code></pre>
+<h4>List Instances with Public IP Address and Name</h4>
+<p>Tip: You can directly put this to your <code>/etc/hosts</code></p>
+<pre><code class="language-bash">aws ec2 describe-instances --query 'Reservations[*].Instances[?not_null(PublicIpAddress)]' | jq -r '.[][]|.PublicIpAddress+&quot; &quot;+(.Tags[]|select(.Key==&quot;Name&quot;).Value)'
+223.64.72.64    fisher.com
+198.82.207.161  robinson.com
+182.139.20.233  nolan.com
+153.134.83.44   grimes-green.net
+202.32.63.121   garrett.com
+</code></pre>
+<h4>List of VPCs and CIDR IP Block</h4>
+<pre><code class="language-bash">aws ec2 describe-vpcs | jq -r '.Vpcs[]|.VpcId+&quot; &quot;+(.Tags[]|select(.Key==&quot;Name&quot;).Value)+&quot; &quot;+.CidrBlock'
+vpc-0d1c1cf4e980ac593  frontend-vpc  10.0.0.0/16
+vpc-00f11e8e33c971058  backend-vpc   172.31.0.0/16
+</code></pre>
+<h4>List of Subnets for a VPC</h4>
+<pre><code class="language-bash">aws ec2 describe-subnets --filter Name=vpc-id,Values=vpc-0d1c1cf4e980ac593 | jq -r '.Subnets[]|.SubnetId+&quot; &quot;+.CidrBlock+&quot; &quot;+(.Tags[]|select(.Key==&quot;Name&quot;).Value)'
+subnet-0dae5d4daa47fe4a2  10.0.128.0/20  Public Subnet 1
+subnet-0641a25faccb01f0f  10.0.32.0/19   Private Subnet 2
+subnet-09fb8038641f1f36f  10.0.0.0/19    Private Subnet 1
+subnet-02a63c67684d8deed  10.0.144.0/20  Public Subnet 2
+</code></pre>
+<h4>List of Security Groups</h4>
+<pre><code class="language-bash">aws ec2 describe-security-groups | jq -r '.SecurityGroups[]|.GroupId+&quot; &quot;+.GroupName'
+sg-02a63c67684d8deed  backend-db
+sg-0dae5d4daa47fe4a2  backend-redis
+sg-0a56bff7b12264282  frontend-lb
+sg-0641a25faccb01f0f  frontend-https
+sg-09fb8038641f1f36f  internal-ssh
+</code></pre>
+<h4>Print Security Groups for an Instance</h4>
+<pre><code class="language-bash">aws ec2 describe-instances --instance-ids i-0dae5d4daa47fe4a2 | jq -r '.Reservations[].Instances[].SecurityGroups[]|.GroupId+&quot; &quot;+.GroupName'
+sg-02a63c67684d8deed  backend-db
+sg-0dae5d4daa47fe4a2  backend-redis
+</code></pre>
+<h4>Edit Security Groups of an Instance</h4>
+<p>You have to provide existing Security Group IDs as well</p>
+<pre><code class="language-bash">aws ec2 modify-instance-attribute --instance-id i-0dae5d4daa47fe4a2 --groups sg-02a63c67684d8deed sg-0dae5d4daa47fe4a2
+</code></pre>
+<h4>Print Security Group Rules as FromAddress and ToPort</h4>
+<pre><code class="language-bash">aws ec2 describe-security-groups --group-ids sg-02a63c67684d8deed | jq -r '.SecurityGroups[].IpPermissions[]|. as $parent|(.IpRanges[].CidrIp+&quot; &quot;+($parent.ToPort|tostring))'
+223.64.72.64/32    3306
+198.82.207.161/32  3306
+168.244.58.160/32  3306
+202.0.149.202/32   3306
+212.143.80.102/32  3306
+</code></pre>
+<h4>Add Rule to Security Group</h4>
+<pre><code class="language-bash">aws ec2 authorize-security-group-ingress --group-id sg-02a63c67684d8deed --protocol tcp --port 443 --cidr 35.0.0.1
+</code></pre>
+<h4>Delete Rule from Security Group</h4>
+<pre><code class="language-bash">aws ec2 revoke-security-group-ingress --group-id sg-02a63c67684d8deed --protocol tcp --port 443 --cidr 35.0.0.1
+</code></pre>
+<h4>Edit Rules of Security Group</h4>
+<p>You have to provide All IP Ranges as well</p>
+<pre><code class="language-bash">aws ec2 update-security-group-rule-descriptions-ingress --group-id sg-02a63c67684d8deed --ip-permissions 'ToPort=443,IpProtocol=tcp,IpRanges=[{CidrIp=202.171.186.133/32,Description=Home}]'
+</code></pre>
+<h4>Delete Security Group</h4>
+<pre><code class="language-bash">aws ec2 delete-security-group --group-id sg-02a63c67684d8deed
+</code></pre>
+<h2>S3</h2>
+<h4>List Buckets</h4>
+<pre><code class="language-bash">aws s3 ls
+2020-01-28 18:49:50 customer-data-primary
+2020-01-28 18:50:22 customer-data-backup
+2020-01-28 18:50:54 wordpress-cdn
+2020-01-28 18:52:25 backend-artifacts-20200220-deployment
+</code></pre>
+<h4>List Files in a Bucket</h4>
+<pre><code class="language-bash">aws s3 ls wordpress-cdn/wp-content/uploads/2019/10/04/
+2019-10-04 15:02:02     133557 amazing-content.jpg
+2019-10-04 15:02:02       2986 amazing-content-103x50.jpg
+2019-10-04 15:02:02       5640 amazing-content-120x120.jpg
+2019-10-04 15:02:02       7924 amazing-content-150x150.jpg
+</code></pre>
+<h4>Create Bucket</h4>
+<pre><code class="language-bash">aws s3 mb s3://my-awesome-new-bucket
+make_bucket: my-awesome-new-bucket
+</code></pre>
+<h4>Delete Bucket</h4>
+<pre><code class="language-bash">aws s3 rb s3://my-awesome-new-bucket --force
+</code></pre>
+<h4>Download S3 Object to Local</h4>
+<pre><code class="language-bash">aws s3 cp s3://my-awesome-new-bucket .
+download: ./backup.tar from s3://my-awesome-new-bucket/backup.tar
+</code></pre>
+<h4>Upload Local File as S3 Object</h4>
+<pre><code class="language-bash">aws s3 cp backup.tar s3://my-awesome-new-bucket
+upload: ./backup.tar to s3://my-awesome-new-bucket/backup.tar
+</code></pre>
+<h4>Delete S3 Object</h4>
+<pre><code class="language-bash">aws s3 rm s3://my-awesome-new-bucket/secret-file.gz .
+delete: s3://my-awesome-new-bucket/secret-file.gz
+</code></pre>
+<h4>Download Bucket to Local</h4>
+<pre><code class="language-bash">aws s3 sync s3://my-awesome-new-bucket/ /media/Passport-Ultra/Backup
+</code></pre>
+<h4>Upload Local Directory to Bucket</h4>
+<pre><code class="language-bash">aws s3 sync /home/minhaz/Downloads s3://my-awesome-new-bucket/
+</code></pre>
+<h4>Share S3 Object without Public Access</h4>
+<pre><code class="language-bash">aws s3 presign s3://my-awesome-new-bucket/business-reports.pdf --expires-in 3600
+https://my-awesome-new-bucket.s3.amazonaws.com/business-reports.pdf?AWSAccessKeyId=AKISUENSAKSIEUAA&amp;Expires=1582876994&amp;Signature=kizOEA93kaIHw7uv25wSFIKLmAx
+</code></pre>
+<h2>API Gateway</h2>
+<h4>List of API Gateway IDs and Names</h4>
+<pre><code class="language-bash">aws apigateway get-rest-apis | jq -r '.items[] | .id+&quot; &quot;+.name'
+5e3221cf8  backend-api
+69ef7d4c8  frontend-api
+bb1e3c281  partner-api
+f99796943  internal-crm-api
+ee86b4cde  import-data-api
+</code></pre>
+<h4>List of API Gateway Keys</h4>
+<pre><code class="language-bash">aws apigateway get-api-keys | jq -r '.items[] | .id+&quot; &quot;+.name'
+ee86b4cde   backend-api-key
+69ef7d4c8   partner-api-key
+</code></pre>
+<h4>List API Gateway Domain Names</h4>
+<pre><code class="language-bash">aws apigateway get-domain-names | jq -r '.items[] | .domainName+&quot; &quot;+.regionalDomainName'
+backend-api.mdminhazulhaque.io   d-ee86b4cde.execute-api.ap-southeast-1.amazonaws.com
+frontend-api.mdminhazulhaque.io  d-bb1e3c281.execute-api.ap-southeast-1.amazonaws.com
+</code></pre>
+<h4>List of Resources for API Gateway</h4>
+<pre><code class="language-bash">aws apigateway get-resources --rest-api-id ee86b4cde  | jq -r '.items[] | .id+&quot; &quot;+.path'
+ee86b4cde  /{proxy+}
+69ef7d4c8  /
+</code></pre>
+<h4>Find Lambda for API Gateway Resource</h4>
+<pre><code class="language-bash">aws apigateway get-integration --rest-api-id ee86b4cde --resource-id 69ef7d4c8 --http-method GET | jq -r '.uri'
+arn:aws:lambda:ap-southeast-1:987654321:function:backend-api-function-5d4daa47fe4a2:live/invocations
+</code></pre>
+<h2>ELB</h2>
+<h4>List of ELB Hostnames</h4>
+<pre><code class="language-bash">aws elbv2 describe-load-balancers --query 'LoadBalancers[*].DNSName'  | jq -r 'to_entries[] | .value'
+frontend-lb-1220186848339.ap-southeast-1.elb.amazonaws.com
+backend-lb-6208709163457.ap-southeast-1.elb.amazonaws.com
+</code></pre>
+<h4>List of ELB ARNs</h4>
+<pre><code class="language-bash">aws elbv2 describe-load-balancers | jq -r '.LoadBalancers[] | .LoadBalancerArn'
+arn:aws:elasticloadbalancing:ap-southeast-1:987654321:loadbalancer/app/frontend-lb/1220186848339
+arn:aws:elasticloadbalancing:ap-southeast-1:987654321:loadbalancer/app/backend-lb/6208709163457
+</code></pre>
+<h4>List of ELB Target Group ARNs</h4>
+<pre><code class="language-bash">aws elbv2 describe-target-groups | jq -r '.TargetGroups[] | .TargetGroupArn'
+arn:aws:elasticloadbalancing:ap-southeast-1:987654321:targetgroup/frontend/b6da07d35
+arn:aws:elasticloadbalancing:ap-southeast-1:987654321:targetgroup/backend/97ad3b13c
+</code></pre>
+<h4>Find Instances for a Target Group</h4>
+<pre><code class="language-bash">aws elbv2 describe-target-health --target-group-arn arn:aws:elasticloadbalancing:ap-southeast-1:987654321:targetgroup/wordpress-ph/88f517d6b5326a26 | jq -r '.TargetHealthDescriptions[] | .Target.Id'
+i-0b3b5128445a332db
+i-0d1c1cf4e980ac593
+i-00f11e8e33c971058
+</code></pre>
+<h2>RDS</h2>
+<h4>List of DB Clusters</h4>
+<pre><code class="language-bash">aws rds describe-db-clusters | jq -r '.DBClusters[] | .DBClusterIdentifier+&quot; &quot;+.Endpoint'
+backend-prod   backend-prod.cluster-b6da07d35.ap-southeast-1.rds.amazonaws.com
+internal-prod  internal-dev.cluster-b6da07d35.ap-southeast-1.rds.amazonaws.com
+</code></pre>
+<h4>List of DB Instances</h4>
+<pre><code class="language-bash">aws rds describe-db-instances | jq -r '.DBInstances[] | .DBInstanceIdentifier+&quot; &quot;+.DBInstanceClass+&quot; &quot;+.Endpoint.Address'
+backend-dev   db.t3.medium  backend-prod.b6da07d35.ap-southeast-1.rds.amazonaws.com
+internal-dev  db.t2.micro   internal-dev.b6da07d35.ap-southeast-1.rds.amazonaws.com
+</code></pre>
+<h4>Take DB Instance Snapshot</h4>
+<pre><code class="language-bash">aws rds create-db-snapshot --db-snapshot-identifier backend-dev-snapshot-0001 --db-instance-identifier backend-dev
+aws rds describe-db-snapshots --db-snapshot-identifier backend-dev-snapshot-0001 --db-instance-identifier general
+</code></pre>
+<h4>Take DB Cluster Snapshot</h4>
+<pre><code class="language-bash">aws rds create-db-cluster-snapshot --db-cluster-snapshot-identifier backend-prod-snapshot-0002 --db-cluster-identifier backend-prod
+aws rds describe-db-cluster-snapshots --db-cluster-snapshot-identifier backend-prod-snapshot-0002 --db-cluster-identifier backend-prod
+</code></pre>
+<h2>ElastiCache</h2>
+<h4>List of ElastiCache Machine Type and Name</h4>
+<pre><code class="language-bash">aws elasticache describe-cache-clusters | jq -r '.CacheClusters[] | .CacheNodeType+&quot; &quot;+.CacheClusterId'
+cache.t2.micro  backend-login-hk
+cache.t2.micro  backend-login-vn
+cache.t2.micro  backend-login-sg
+</code></pre>
+<h4>List of ElastiCache Replication Groups</h4>
+<pre><code class="language-bash">aws elasticache describe-replication-groups | jq -r '.ReplicationGroups[] | .ReplicationGroupId+&quot; &quot;+.NodeGroups[].PrimaryEndpoint.Address'
+backend-login-hk backend-login-hk.6da35.ng.0001.apse1.cache.amazonaws.com
+backend-login-vn backend-login-vn.6da35.ng.0001.apse1.cache.amazonaws.com
+backend-login-sg backend-login-sg.6da35.ng.0001.apse1.cache.amazonaws.com
+</code></pre>
+<h4>List of ElastiCache Snapshots</h4>
+<pre><code class="language-bash">aws elasticache describe-snapshots | jq -r '.Snapshots[] | .SnapshotName'
+automatic.backend-login-hk-2020-02-27-00-27
+automatic.backend-login-vn-2020-02-27-00-27
+automatic.backend-login-sg-2020-02-27-00-27
+</code></pre>
+<h4>Create ElastiCache Snapshot</h4>
+<pre><code class="language-bash">aws elasticache create-snapshot --snapshot-name backend-login-hk-snap-0001 --replication-group-id backend-login-hk --cache-cluster-id backend-login-hk
+</code></pre>
+<h4>Delete ElastiCache Snapshot</h4>
+<pre><code class="language-bash">aws elasticache delete-snapshot --snapshot-name backend-login-hk-snap-0001
+</code></pre>
+<h4>Scale Up/Down ElastiCache Replica</h4>
+<pre><code class="language-bash">aws elasticache increase-replica-count --replication-group-id backend-login-hk --apply-immediately
+aws elasticache decrease-replica-count --replication-group-id backend-login-hk --apply-immediately
+</code></pre>
+<h2>Lambda</h2>
+<h4>List of Lambda Functions, Runtime and Memory</h4>
+<pre><code class="language-bash">aws lambda list-functions | jq -r '.Functions[] | .FunctionName+&quot; &quot;+.Runtime+&quot; &quot;+(.MemorySize|tostring)'
+backend-api-function           nodejs8.10  512
+backend-signup-email-function  nodejs10.x  128
+partner-api-8XJAP1VVLYA7       python3.7   128
+marketing-promo-sqs-function   nodejs10.x  128
+</code></pre>
+<h4>List of Lambda Layers</h4>
+<pre><code class="language-bash">aws lambda list-layers | jq -r '.Layers[] | .LayerName'
+imagemagik-layer
+django-layer
+nodejs-extra-layer
+</code></pre>
+<h4>List of Source Event for Lambda</h4>
+<pre><code class="language-bash">aws lambda list-event-source-mappings | jq -r '.EventSourceMappings[] | .FunctionArn+&quot; &quot;+.EventSourceArn'
+arn:aws:lambda:function:backend-api-function           arn:aws:dynamodb:table/prod-user-list/stream
+arn:aws:lambda:function:backend-signup-email-function  arn:aws:dynamodb:table/prod-user-email/stream
+arn:aws:lambda:function:partner-api-8XJAP1VVLYA7       arn:aws:sqs:partner-input-msg-queue
+arn:aws:lambda:function:marketing-promo-sqs-function   arn:aws:sqs:promo-input-msg-queue
+</code></pre>
+<h4>Download Lambda Code</h4>
+<pre><code class="language-bash">aws lambda get-function --function-name DynamoToSQS | jq -r .Code.Location
+https://awslambda-ap-se-1-tasks.s3.ap-southeast-1.amazonaws.com/snapshots/987654321/backend-api-function-1fda0de7-a751-4586-bf64-5601a410c170
+</code></pre>
+<h2>Cloudwatch</h2>
+<h4>List of CloudWatch Alarms and Status</h4>
+<pre><code class="language-bash">aws cloudwatch describe-alarms | jq -r '.MetricAlarms[] | .AlarmName+&quot; &quot;+.Namespace+&quot; &quot;+.StateValue'
+backend-autoscale  AWS/EC2             OK
+backend-lb         AWS/ApplicationELB  OK
+partner-hk         AWS/ECS             ALARM
+partner-vn         AWS/ECS             ALARM
+partner-sg         AWS/ECS             ALARM
+userdata-read      AWS/DynamoDB        OK
+userdata-write     AWS/DynamoDB        OK
+</code></pre>
+<h4>Create Alarm for EC2 High CPUUtilization</h4>
+<pre><code class="language-bash">aws cloudwatch put-metric-alarm --alarm-name high-cpu-usage --alarm-description &quot;Alarm when CPU exceeds 70 percent&quot; --metric-name CPUUtilization --namespace AWS/EC2 --statistic Average --period 300 --threshold 70 --comparison-operator GreaterThanThreshold  --dimensions &quot;Name=InstanceId,Value=i-123456789&quot; --evaluation-periods 2 --alarm-actions arn:aws:sns:ap-southeast-1:987654321:System-Alerts --unit Percent
+</code></pre>
+<h4>Create Alarm for EC2 High StatusCheckFailed_Instance</h4>
+<pre><code class="language-bash">aws cloudwatch put-metric-alarm --alarm-name EC2-StatusCheckFailed-AppServer --alarm-description &quot;EC2 StatusCheckFailed for AppServer&quot; --metric-name StatusCheckFailed_Instance --namespace AWS/EC2 --statistic Average --period 60 --threshold 0 --comparison-operator GreaterThanThreshold  --dimensions &quot;Name=InstanceId,Value=i-123456789&quot; --evaluation-periods 3 --alarm-actions arn:aws:sns:ap-southeast-1:987654321:System-Alerts --unit Count
+</code></pre>
+<h2>Route53</h2>
+<h4>List Domains</h4>
+<pre><code class="language-bash">aws route53 list-hosted-zones | jq -r '.HostedZones[]|.Id+&quot; &quot;+.Name'
+/hostedzone/ZEB1PAH4U mysite.com.
+/hostedzone/ZQUOHGH3G yoursite.com.
+/hostedzone/ZEADEA0CO staywith.us.
+</code></pre>
+<h4>List Records for a Domain (Zone)</h4>
+<pre><code class="language-bash">aws route53 list-resource-record-sets --hosted-zone-id /hostedzone/ZEB1PAH4U | jq -r '.ResourceRecordSets[]| if (.AliasTarget!=null) then .Type+&quot; &quot;+.Name+&quot; &quot;+.AliasTarget.DNSName else .Type+&quot; &quot;+.Name+&quot; &quot;+.ResourceRecords[].Value end'
+A      mysite.com.              dualstack.mysite-lb-967522168.ap-southeast-1.elb.amazonaws.com.
+A      mysite.com.              11.22.33.44
+TXT    _amazonses.mysite.com.   6c6d761371f0480bbe60de0df275b550
+A      test.mysite.com.         55.66.77.88
+CNAME  www.mysite.com.          mysite.com
+</code></pre>
+<h2>SNS</h2>
+<h4>List of SNS Topics</h4>
+<pre><code class="language-bash">aws sns list-topics | jq -r '.Topics[] | .TopicArn'
+arn:aws:sns:ap-southeast-1:987654321:backend-api-monitoring
+arn:aws:sns:ap-southeast-1:987654321:dynamodb-count-check
+arn:aws:sns:ap-southeast-1:987654321:partner-integration-check
+arn:aws:sns:ap-southeast-1:987654321:autoscale-notifications
+</code></pre>
+<h4>List of SNS Topic and related Subscriptions</h4>
+<pre><code class="language-bash">aws sns list-subscriptions | jq -r '.Subscriptions[] | .TopicArn+&quot; &quot;+.Protocol+&quot; &quot;+.Endpoint'
+arn:aws:sns:ap-southeast-1:autoscale-notifications    lambda  arn:aws:lambda:function:autoscale-function
+arn:aws:sns:ap-southeast-1:backend-api-monitoring     email   alert@mdminhazulhaque.io
+arn:aws:sns:ap-southeast-1:dynamodb-count-check       email   alert@mdminhazulhaque.io
+arn:aws:sns:ap-southeast-1:partner-integration-check  lambda  arn:aws:lambda:function:partner-function
+arn:aws:sns:ap-southeast-1:autoscale-notifications    lambda  arn:aws:lambda:function:autoscale-function
+</code></pre>
+<h4>Publish to SNS Topic</h4>
+<pre><code class="language-bash">aws sns publish --topic-arn arn:aws:sns:ap-southeast-1:987654321:backend-api-monitoring \
+    --message &quot;Panic!!!&quot; \
+    --subject &quot;The API is down!!!&quot;
+</code></pre>
+<h2>DynamoDB</h2>
+<h4>List of DynamoDB Tables</h4>
+<pre><code class="language-bash">aws dynamodb list-tables | jq -r .TableNames[]
+userdata_hk
+userdata_vn
+userdata_sg
+providers
+events
+</code></pre>
+<h4>Get All Items from a Table</h4>
+<p>This command will stream ALL items untill SIGINT is sent</p>
+<pre><code class="language-bash">aws dynamodb scan --table-name events 
+</code></pre>
+<h4>Get Item Count from a Table</h4>
+<pre><code class="language-bash">aws dynamodb scan --table-name events --select COUNT | jq .ScannedCount
+726119
+</code></pre>
+<h4>Get Item using Key</h4>
+<pre><code class="language-bash">aws dynamodb get-item --table-name events --key '{&quot;email&quot;: {&quot;S&quot;: &quot;admin@mdminhazulhaque.io&quot;}}'
+{
+    &quot;Item&quot;: {
+        &quot;email&quot;: {
+            &quot;S&quot;: &quot;admin@mdminhazulhaque.io&quot;
+        },
+        &quot;created_at&quot;: {
+            &quot;N&quot;: &quot;1554780667296&quot;
+        },
+        &quot;event_type&quot;: {
+            &quot;S&quot;: &quot;DISPATCHED&quot;
+        }
+    }
+}
+</code></pre>
+<h4>Get Specific Fields from an Item</h4>
+<pre><code class="language-bash">aws dynamodb get-item --table-name events --key '{&quot;email&quot;: {&quot;S&quot;: &quot;admin@mdminhazulhaque.io&quot;}}' --attributes-to-get event_type
+{
+    &quot;Item&quot;: {
+        &quot;event_type&quot;: {
+            &quot;S&quot;: &quot;DISPATCHED&quot;
+        }
+    }
+}
+</code></pre>
+<h4>Delete Item using Key</h4>
+<pre><code class="language-bash">aws dynamodb delete-item --table-name events --key '{&quot;email&quot;: {&quot;S&quot;: &quot;admin@mdminhazulhaque.io&quot;}}'
+</code></pre>
+<h2>SQS</h2>
+<h4>List Queues</h4>
+<pre><code class="language-bash">aws sqs list-queues | jq -r '.QueueUrls[]'
+https://ap-southeast-1.queue.amazonaws.com/987654321/public-events.fifo
+https://ap-southeast-1.queue.amazonaws.com/987654321/user-signup
+</code></pre>
+<h4>Create Queue</h4>
+<pre><code class="language-bash">aws sqs create-queue --queue-name public-events.fifo | jq -r .QueueUrl
+https://ap-southeast-1.queue.amazonaws.com/987654321/public-events.fifo
+</code></pre>
+<h4>Count Messages in Queue</h4>
+<pre><code class="language-bash">aws sqs get-queue-attributes --queue-url https://ap-southeast-1.queue.amazonaws.com/987654321/public-events.fifo | jq -r '.Attributes | .QueueArn + &quot; &quot; + .ApproximateNumberOfMessages'
+arn:aws:sqs:ap-southeast-1:987654321:events.fifo 42
+</code></pre>
+<h4>Send Message</h4>
+<pre><code class="language-bash">aws sqs send-message --queue-url https://ap-southeast-1.queue.amazonaws.com/987654321/public-events.fifo --message-body Hello
+{
+    &quot;MD5OfMessageBody&quot;: &quot;37b51d194a7513e45b56f6524f2d51f2&quot;,
+    &quot;MessageId&quot;: &quot;4226398e-bab0-4bee-bf5a-8e7ae18c855a&quot;
+}
+</code></pre>
+<h4>Receive Message</h4>
+<pre><code class="language-bash">aws sqs receive-message --queue-url https://ap-southeast-1.queue.amazonaws.com/987654321/public-events.fifo | jq -r '.Messages[] | .Body'
+Hello
+</code></pre>
+<h4>Delete Message</h4>
+<pre><code class="language-bash">aws sqs delete-message --queue-url https://ap-southeast-1.queue.amazonaws.com/987654321/public-events.fifo --receipt-handle &quot;AQEBpqKLxNb8rIOn9ykSeCkKebNzn0BrEJ3Cg1RS6MwID2t1oYHCnMP06GnuVZGzt7kpWXZ5ieLQ==&quot;
+</code></pre>
+<h4>Purge Queue</h4>
+<pre><code class="language-bash">aws sqs purge-queue --queue-url https://ap-southeast-1.queue.amazonaws.com/987654321/public-events.fifo
+</code></pre>
+<h4>Delete Queue</h4>
+<pre><code class="language-bash">aws sqs delete-queue --queue-url https://ap-southeast-1.queue.amazonaws.com/987654321/public-events.fifo
+</code></pre>
+<h2>CloudFront</h2>
+<h4>List of CloudFront Distributions and Origins</h4>
+<pre><code class="language-bash">aws cloudfront list-distributions | jq -r '.DistributionList.Items[] | .DomainName+&quot; &quot;+.Origins.Items[0].DomainName'
+d9d5bb1e3c281f.cloudfront.net  frontend-prod-hk.s3.amazonaws.com
+d12b09e8a0a996.cloudfront.net  frontend-prod-vn.s3.amazonaws.com
+db64e7e9b3cc22.cloudfront.net  frontend-prod-sg.s3.amazonaws.com
+d5e3221cf8b921.cloudfront.net  cdn.mdminhazulhaque.io
+</code></pre>
+<h4>Create Cache Invalidation</h4>
+<pre><code class="language-bash">aws cloudfront create-invalidation --distribution-id D12B09E8A0A996  --path /blog/\* /blog/assets/\* | jq -r '.Invalidation.Id'
+IALJ5AL93ZD79
+</code></pre>
+<h4>Check Cache Invalidation Status</h4>
+<pre><code class="language-bash">aws cloudfront get-invalidation --distribution-id D12B09E8A0A996 --id IALJ5AL93ZD79 | jq -r '.Invalidation.Status'
+Completed
+</code></pre>
+<h2>Amplify</h2>
+<h4>List of Amplify Apps and Source Repository</h4>
+<pre><code class="language-bash">aws amplify list-apps | jq -r '.apps[] | .name+&quot; &quot;+.defaultDomain+&quot; &quot;+.repository'
+fe-vn  d9d5bb1e3c281f.amplifyapp.com  https://bitbucket.org/aws/frontend-vn
+fe-hk  db64e7e9b3cc22.amplifyapp.com  https://bitbucket.org/aws/frontend-hk
+fe-sg  d5e3221cf8b921.amplifyapp.com  https://bitbucket.org/aws/frontend-sg
+</code></pre>
+<h2>Cognito</h2>
+<h4>List of User Pool IDs and Names</h4>
+<pre><code class="language-bash">aws cognito-idp list-user-pools --max-results 60 | jq -r '.UserPools[] | .Id+&quot; &quot;+.Name'
+ap-southeast-1_b6da07d35 prod-users
+ap-southeast-1_b6da07d34 dev-users
+</code></pre>
+<h4>List of Phone and Email of All Users</h4>
+<pre><code class="language-bash">aws cognito-idp list-users --user-pool-id ap-southeast-1_b6da07d35 | jq -r '.Users[].Attributes | from_entries | .sub + &quot; &quot; + .phone_number + &quot; &quot; + .email'
+585fb96e-525c-4f9b-9d41-865d2dffde9b +601122334455 admin@mdminhazulhaque.io
+71f2778c-8e21-4775-94dc-e363c77d1ae1 +601122334455 foo@bar.com
+8fc1882e-e661-49db-88e6-45d370bc352a +601122334455 cli@aws.com
+</code></pre>
+<h2>IAM User</h2>
+<h4>List of UserId and UserName</h4>
+<pre><code class="language-bash">aws iam list-users | jq -r '.Users[]|.UserId+&quot; &quot;+.UserName'
+AIDAZBWIOJIQFOLNBXXCVSUQ kaiser
+AIDAZCTWYVXYOKSHVWXPYPLR thornton
+AIDAZUYALCGFQJENBCZFJTVX maldonado
+AIDAZKQAFIGQJWOKKSKRBLGE key
+AIDAZXUDGQVQCEWBFGIJOWWY nelson
+</code></pre>
+<h4>Get Single User</h4>
+<pre><code class="language-bash">aws iam get-user --user-name kaiser
+</code></pre>
+<h4>Add User</h4>
+<pre><code class="language-bash">aws iam create-user --user-name audit-temp
+</code></pre>
+<h4>Delete User</h4>
+<pre><code class="language-bash">aws iam delete-user --user-name audit-temp
+</code></pre>
+<h4>List Access Keys for User</h4>
+<pre><code class="language-bash">aws iam list-access-keys --user-name audit-temp | jq -r .AccessKeyMetadata[].AccessKeyId
+AKIABWIOJIQFOLNBXXCVSUQ
+AKIACTWYVXYOKSHVWXPYPLR
+AKIAUYALCGFQJENBCZFJTVX
+</code></pre>
+<h4>Delete Access Key for User</h4>
+<pre><code class="language-bash">aws iam delete-access-key --user-name audit-temp --access-key-id AKIABWIOJIQFOLNBXXCVSUQ
+</code></pre>
+<h4>Activate/Deactivate Access Key for User</h4>
+<pre><code class="language-bash">aws iam update-access-key --status Inactive --user-name audit-temp --access-key-id AKIABWIOJIQFOLNBXXCVSUQ
+aws iam update-access-key --status Active   --user-name audit-temp --access-key-id AKIABWIOJIQFOLNBXXCVSUQ
+</code></pre>
+<h4>Generate New Access Key for User</h4>
+<pre><code class="language-bash">aws iam create-access-key --user-name audit-temp | jq -r '.AccessKey | .AccessKeyId+&quot; &quot;+.SecretAccessKey'
+AKIABWIOJIQFOLNBXXCVSUQ p9ge02ebLX9jobdQKmfikRqCiEw3HBylwHyXq0z
+</code></pre>
+<h2>IAM Group</h2>
+<h4>List Groups</h4>
+<pre><code class="language-bash">aws iam list-groups | jq -r .Groups[].GroupName
+developers
+administrators
+testers
+marketing-ro
+</code></pre>
+<h4>Add/Delete Groups</h4>
+<pre><code class="language-bash">aws iam create-group --group-name business-ro
+aws iam delete-group --group-name business-ro
+</code></pre>
+<h4>List of Policies and ARNs</h4>
+<pre><code class="language-bash">aws iam list-policies               | jq -r '.Policies[]|.PolicyName+&quot; &quot;+.Arn'
+aws iam list-policies --scope AWS   | jq -r '.Policies[]|.PolicyName+&quot; &quot;+.Arn'
+aws iam list-policies --scope Local | jq -r '.Policies[]|.PolicyName+&quot; &quot;+.Arn'
+</code></pre>
+<h4>List of User/Group/Roles for a Policy</h4>
+<pre><code class="language-bash">aws iam list-entities-for-policy --policy-arn arn:aws:iam::987654321:policy/Marketing-ReadOnly
+</code></pre>
+<h4>List Policies for a Group</h4>
+<pre><code class="language-bash">aws iam list-attached-group-policies --group-name business-ro
+</code></pre>
+<h4>Add Policy to a Group</h4>
+<pre><code>aws iam attach-group-policy --group-name business-ro --policy-arn arn:aws:iam::aws:policy/DynamoDBReadOnlyAccess
+</code></pre>
+<h4>Add User to a Group</h4>
+<pre><code class="language-bash">aws iam add-user-to-group --group-name business-ro --user-name marketing-michael
+</code></pre>
+<h4>Remove User from a Group</h4>
+<pre><code class="language-bash">aws iam remove-user-from-group --group-name business-ro --user-name marketing-alice
+</code></pre>
+<h4>List Users in a Group</h4>
+<pre><code class="language-bash">aws iam get-group --group-name business-ro
+</code></pre>
+<h4>List Groups for a User</h4>
+<pre><code class="language-bash">aws iam list-groups-for-user --user-name qa-bob
+</code></pre>
+<h4>Attach/Detach Policy to a Group</h4>
+<pre><code class="language-bash">aws iam detach-group-policy --group-name business-ro --policy-arn arn:aws:iam::aws:policy/DynamoDBFullAccess
+aws iam attach-group-policy --group-name business-ro --policy-arn arn:aws:iam::aws:policy/DynamoDBFullAccess
+</code></pre>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux.html">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets.html">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia.html">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos.html">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android.html">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt.html">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware.html">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt.html">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database.html">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws.html">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes.html">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

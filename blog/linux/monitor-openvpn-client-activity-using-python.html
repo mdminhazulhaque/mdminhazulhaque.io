@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Monitor OpenVPN Client Activity using Python" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        Monitor OpenVPN Client Activity using Python | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">
+                    Minhaz
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">Monitor OpenVPN Client Activity using Python</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 09 Aug, 2020 in linux</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <p>Installing OpenVPN in your own server gives you two major benefits. First, you will have better privacy control. Second, no need to spend on <code>pay-per-user</code> thing. As long as the CPU can handle encryption/decryption, and the ethernet controller can handle the traffic, OpenVPN is a pretty good choice for providing VPN service to a small-sized team.</p>
+<h2>OpenVPN Config</h2>
+<p>Anyway, a typical OpenVPN Server configuration looks like the following.</p>
+<pre><code class="language-bash">dev tun-udp-1194
+server 10.10.10.0 255.255.255.0
+proto udp
+port 1194
+
+ca /etc/openvpn/pki/ca.crt
+cert /etc/openvpn/pki/issued/server@mdminhazulhaque.io.crt
+key /etc/openvpn/pki/private/server@mdminhazulhaque.io.key
+dh /etc/openvpn/pki/dh.pem
+crl-verify /etc/openvpn/pki/crl.pem
+
+remote-cert-tls client
+keepalive 10 120
+tls-auth /etc/openvpn/pki/ta.key 0
+cipher AES-256-CBC
+tls-cipher TLS-DHE-DSS-WITH-AES-256-CBC-SHA256
+auth SHA256
+tls-version-min 1.2
+comp-lzo
+persist-key
+persist-tun
+verb 0
+</code></pre>
+<h2>OpenVPN Management over Telnet</h2>
+<p>In order to access the telnet management console, the following line has to be added in <code>/etc/openvpn/server.conf</code>. Also the <code>openvpn.service</code> must be reloaded for the change to take effect.</p>
+<pre><code>management 127.0.0.1 7000
+</code></pre>
+<p>Alright. Next thing is, try connecting to port <code>7000</code> via <code>telnet</code> command. If it was a success, then we can use a small Python3 script to talk with the OpenVPN server.</p>
+<h2>A Bit of Knowledge about Common Name</h2>
+<p>Before we run any script, we need to find out the <code>CN</code> or Common Name used in the RSA Root Certificate. For example, if you generate the <code>CA</code> file with <code>CN=mdminhazulhaque.io</code>, both EasyRSA and OpenVPN will append this <code>CN</code> after the client's name. A sample server and client names could be as follows.</p>
+<pre><code>Server: server@mdminhazulhaque.io
+Client Mark: mark@mdminhazulhaque.io
+Client Bob: bob@mdminhazulhaque.io
+Client Alice: alice@mdminhazulhaque.io
+</code></pre>
+<p>Which means, the client names must be unique because OpenVPN uses the client name to map DHCP IP Addresses for remote users.</p>
+<h2>Run the Script!</h2>
+<p>Well, now we know the common name. It could be <code>mdminhazulhaque.io</code>, or <code>example.com</code> or <code>server</code> or anything. We need to amend the <code>RE_COMMON_NAME</code> regex and put the correct value there. Once done, upload the script to the OpenVPN server and run it using <code>python3</code>.</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+
+import re
+import telnetlib
+import time
+
+# TODO change here
+RE_COMMON_NAME = &quot;^*@mdminhazulhaque.io.*$&quot;
+
+HOST = &quot;127.0.0.1&quot;
+PORT = &quot;7000&quot;
+INTERVAL = 5
+PRE_USERS = {}
+
+def alert(user, ip, state):
+    print(F&quot;*{user}* {state} from {ip}&quot;)
+    # TODO You can call Slack or API Gateway here
+
+while True:
+    telnet = telnetlib.Telnet(HOST,PORT, 5)
+    telnet.write(&quot;status\n&quot;)
+    output = telnet.read_until(&quot;END\n&quot;, 1)
+    telnet.close()
+
+    CURR_USERS = {}
+
+    for line in output.split(&quot;\n&quot;):
+        if re.search(RE_COMMON_NAME, line):
+            user, realaddress, _, _, _ = line.split(&quot;,&quot;)
+            ip = realaddress.split(&quot;:&quot;)[0]
+            CURR_USERS[user] = ip
+
+    connected = set(CURR_USERS.keys()) - set(PRE_USERS.keys())
+    disconnected = set(PRE_USERS.keys()) - set(CURR_USERS.keys())
+
+    for user in list(connected):
+        alert(user, CURR_USERS[user], &quot;connected&quot;)
+    for user in list(disconnected):
+        alert(user, PRE_USERS[user], &quot;disconnected&quot;)
+
+    PRE_USERS = CURR_USERS    
+
+    time.sleep(INTERVAL)
+</code></pre>
+<h2>The Result</h2>
+<p>If you keep running the script in background (<code>screen</code> or <code>systemd</code> whichever you prefer), you will see activity alerts like the following.</p>
+<pre><code>mark@mdminhazulhaque.io connected from 190.106.117.114
+bob@mdminhazulhaque.io connected from 186.110.104.190
+alice@mdminhazulhaque.io connected from 144.143.163.176
+...
+alice@mdminhazulhaque.io disconnected from 144.143.163.176
+mark@mdminhazulhaque.io disconnected from 190.106.117.114
+bob@mdminhazulhaque.io disconnected from 186.110.104.190
+</code></pre>
+<h2>More Tweaks</h2>
+<p>You can simply override the <code>alert</code> function and call custom Slack or API Gateway URL using <code>requests</code>. Tada!</p>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux.html">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets.html">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia.html">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos.html">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android.html">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt.html">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware.html">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt.html">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database.html">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws.html">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes.html">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

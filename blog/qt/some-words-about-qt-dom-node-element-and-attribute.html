@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Some words about Qt DOM Node, Element and Attribute" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        Some words about Qt DOM Node, Element and Attribute | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">
+                    Minhaz
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">Some words about Qt DOM Node, Element and Attribute</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 02 Jan, 2015 in qt</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <h2>Add Instruction Node</h2>
+<p>Every valid XML must contain processing instruction. XML is widely used for
+HTML, SVG, XLS etc. So make sure your XML file has valid instruction of its
+type and encoding. The following line is a sample XML processing instruction.</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</code></pre>
+<h2>Skip Instruction Node While Reading XML</h2>
+<p>I don't know how you read XML nodes and values. Most examples out there use
+parent and child counts. Obviously, DOM processing instruction is a node.
+Let's refer the following XML file.</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;properties&gt;
+    &lt;node type=&quot;user&quot;&gt;minhaz&lt;/node&gt;
+    &lt;node type=&quot;os&quot;&gt;linux&lt;/node&gt;
+    &lt;node type=&quot;version&quot;&gt;3.2.0-37&lt;/node&gt;
+&lt;/properties&gt;
+</code></pre>
+<p>A valid XML must start with a root element. Here <code>properties</code> is a root
+element. It has 3 child nodes. Each node has <code>node value</code> and
+<strong>attribute</strong>. So how do we parse the whole XML? If we refer the whole
+document as a node, then the first line, processing instruction, will be
+regarded as a node. So properties will be the 2nd child node, but technically,
+it is the first/root node. So instead of using
+<code>document.childNodes().at(1)</code> method, we could use
+<code>document.namedItem("properties")</code> to get list of all child nodes under
+properties tag. Here is a sample code.</p>
+<pre><code class="language-cpp">QDomDocument document;
+document.setContent(xmlString);
+QDomNode root = document.namedItem(&quot;properties&quot;);
+QDomNodeList nodes = root.childNodes();
+
+for(int i=0;i&lt;nodes.count();i++)
+{
+    qDebug() &lt;&lt; &quot;Type: &quot; &lt;&lt; nodes.at(i).toElement().attribute(&quot;type&quot;)
+        &lt;&lt; &quot; Value: &quot; &lt;&lt; nodes.at(i).toElement().text();
+}
+</code></pre>
+<p>And this will result into the following output.</p>
+<pre><code class="language-cpp">Type:  &quot;user&quot;  Value:  &quot;minhaz&quot; 
+Type:  &quot;os&quot;  Value:  &quot;linux&quot; 
+Type:  &quot;version&quot;  Value:  &quot;3.2.0-37&quot;
+</code></pre>
+<p>Any more confusion? Or a better method? Let me know.</p>
+<h2>Create XML and Write into File</h2>
+<p>Parsing XML is easy. The structure is already preset there. Just detect the
+hierarchy and parse. But what about creating your own? Perhaps from an user
+defined directory tree? I went into this painful issue, and then found the
+correct solution.</p>
+<p>What if we try to generate an XML from the previous text output. Assume that
+we have two string lists.</p>
+<pre><code class="language-cpp">QStringList attributeValues = QStringList() &lt;&lt; &quot;user&quot; &lt;&lt; &quot;os&quot; &lt;&lt; &quot;version&quot;;
+QStringList nodeValues = QStringList() &lt;&lt; &quot;minhaz&quot; &lt;&lt; &quot;linux&quot; &lt;&lt; &quot;3.2.0-37&quot;;
+</code></pre>
+<p>We need to create an XML using these strings, and with a processing
+instruction. Lets get started.</p>
+<p>First, create a DOM document. (Don't blame me unless you added <code>qt += xml</code>
+to your project file) Then declare a QDomDocument object.</p>
+<pre><code class="language-cpp">QDomDocument document;
+</code></pre>
+<p>Now create a QDomProcessingInstruction object with correct encoding and XML
+version. Then add it as child node of document.</p>
+<pre><code class="language-cpp">QDomProcessingInstruction header = document.createProcessingInstruction(&quot;xml&quot;, &quot;version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;&quot;);
+document.appendChild(header);
+</code></pre>
+<p>Now move to root node with tagname <code>properties</code>. Create a QDomElement
+object and append it to root.</p>
+<pre><code class="language-cpp">QDomElement root = document.createElement(&quot;properties&quot;);
+document.appendChild(root);
+</code></pre>
+<p>Then we will add child nodes under <code>properties</code> tag. Most people might
+think that the following line would add child nodes under root.</p>
+<pre><code class="language-cpp">QDomNode child;
+root.appendChild(child);
+</code></pre>
+<p><strong>NO! That is wrong</strong>. You must create every node or elements using the reference of document. Just keep in mind that there might be more than one documents in codes. So you should not mess with parents and childs. The following lines will generate child nodes under <code>properties</code> tag.  </p>
+<pre><code class="language-cpp">QDomElement node = document.createElement(&quot;node&quot;);
+root.appendChild(node);
+</code></pre>
+<p>Did you spot the difference? You have to use <code>document.createElement</code>, not
+root.appendChild method. As we have a list of strings, so we can use a loop to
+create all nodes and set values to them.</p>
+<pre><code class="language-cpp">for(int i=0;i&lt;attributeValues.size();i++)
+{
+    QDomElement node = document.createElement(&quot;node&quot;);
+    node.setAttribute(&quot;type&quot;,attributeValues.at(i));
+    root.appendChild(node);
+
+    QDomText value = document.createTextNode(nodeValues.at(i));
+    node.appendChild(value);
+}
+</code></pre>
+<p>The code looks pretty clear. Create an element, set its attribute and append
+it to root. The 2nd block is used to set the value of that node.</p>
+<p>To write the XML into file, open a QFile object, open it and flush the
+document onto it.</p>
+<pre><code class="language-cpp">QFile xml(&quot;new-xml-file.xml&quot;);
+xml.open(QIODevice::WriteOnly);
+xml.write(document.toByteArray());
+xml.close();
+</code></pre>
+<p>Here is the output.</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;properties&gt;
+    &lt;node type=&quot;user&quot;&gt;minhaz&lt;/node&gt;
+    &lt;node type=&quot;os&quot;&gt;linux&lt;/node&gt;
+    &lt;node type=&quot;version&quot;&gt;3.2.0-37&lt;/node&gt;
+&lt;/properties&gt;
+</code></pre>
+<p>That is enough for basic XML r/w actions. If you want to learn more or go
+deeper, run Qt Assistant. They have really awesome and detailed documents out
+there.</p>
+<p>Cheers!</p>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux.html">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets.html">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia.html">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos.html">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android.html">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt.html">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware.html">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt.html">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database.html">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws.html">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes.html">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Tweak your Bee IPTV Box with 3rd Party App and Launcher" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        Tweak your Bee IPTV Box with 3rd Party App and Launcher | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">
+                    Minhaz
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">Tweak your Bee IPTV Box with 3rd Party App and Launcher</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 30 May, 2019 in android</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <p>Yesterday, I got a call from one of my colleagues (and also my neighbor) about how he messed up with his Android TV Box. He asked me if I could help him with that to make it <strike>great</strike> useful again.</p>
+<p>Basically he bought the box with a subscription long ago. After it got expired, the startup app kept complaining about the subscription. He did perform a factory reset which caused the box loose its realm. As a result, it was no way useful for him other than throwing it away or tweak it.</p>
+<p>After I got the box in my hands, first thing I tried is looking for it's model or chip number. I got <code>OTT TV BOX</code> written at the bottom and <code>beeiptv</code> on the top. Searching those keys gave me no idea, so I turned it on and plugged it into my TV.</p>
+<p>The box booted real fast and the vendor-locked <code>beeiptv</code> app appeared with error messages something like this. Not to mention, I made sure it had internet connection via Ethernet.</p>
+<blockquote>
+<p>Failed connecting to middleware service A.B.C.D. Please check your internet connectivity or contact network admin.</p>
+</blockquote>
+<p>Again, it gave me no clue. So I plugged in an USB mouse and manually checked the device status page. It revealed the build number, kernel version etc. I was laughing to see that the developer could only mod the <code>Model Number</code>, nothing else.</p>
+<p><img alt="Device Info Bee IPTV" src="https://i.imgur.com/FI2bzOq.png" /></p>
+<p>Anyway, the board version <code>rk322x</code> indicated that it uses Rockchip SoC. I had never worked with Rockchip, but they are damn famous for low cost STB and other IoT devices. I had an idea in my mind. I checked the <code>Developer Settings</code> and found that the <code>USB Debugging</code> option was already turned on. But I had no such cable that could connect the USB-Female port of the box to my computer's similar one. So I kept looking for alternatives.</p>
+<p>Long ago I used to work with Android when the <code>adb</code> tool came handy. <code>adb</code> can connect over the wifi also. So I though I should give it a try for the box too. Then I got the box's IP from my router's DHCP table. Then ran this command in the terminal.</p>
+<pre><code>adb connect 192.168.0.122:5555 # adb uses this port by default
+</code></pre>
+<p>Viola! It got connected. Another wonder was waiting for me. After trying <code>adb shell</code> I typed <code>su</code> and it worked too! That means I can do whatever I want with this box until it does. Yeee!!!</p>
+<p>Okay back to the business. From the behaviors of the default, vendor-locked launcher app, I guessed it prohibits any other app to be used as a launcher. Plus there was no way to access the App Drawer. So I decided to get benefit from <code>adb</code> again.</p>
+<p>I downloaded 2 APK from the internet. You might ask why this specific two. Well, the box runs Android 4.4 which is way old than todays. So make sure you check the Android version compatibility before installing any app.</p>
+<ul>
+<li>com.swiftstreamz.live (For 3rd party live TV service)</li>
+<li>by.mediatech.home (For launcher/app drawer)</li>
+</ul>
+<p>I used the command <code>adb install &lt;apkfile&gt;</code>. Both of them got installed without any error. Then I tried starting the 3rd party TV app via adb.</p>
+<pre><code>am start -e name Splash -n com.swiftstreamz.live/.MainActivity
+</code></pre>
+<p>It worked! I could see the new app interface in my TV. This gave my confidence a boost. So I decided to start the launcer too.</p>
+<pre><code>am start -e name Splash -n by.mediatech.home/.MainActivity
+</code></pre>
+<p>After having success with installing and running those apps, I knew I had only one challenge left ahead of me.</p>
+<ol>
+<li>Bypass the vendor-locked launcer and use the new one installed by me</li>
+</ol>
+<p>I googled around a bit and found that Android let's you reset default launcher settings if you long tap the <code>Home</code> button for 6 seconds. I did it and set the <code>TVHome</code> app as default. When the launcher came, I could see all the applications installed in a row.</p>
+<p><img alt="New TV Home App" src="https://i.imgur.com/eskp7sG.jpg" /></p>
+<p>Before celebrating my success, I did some extra tweaks.</p>
+<ul>
+<li>Disabled key press sound to make things faster</li>
+<li>Disabled autolock screen</li>
+<li>
+<p>Disabled the following packages using <code>pm disable &lt;pkg&gt;</code></p>
+<ul>
+<li><code>com.android.htmlviewer</code> # Won't do any WebDev thingy</li>
+<li><code>com.android.inputmethod.pinyin</code> # Don't need Chinese input</li>
+<li><code>com.android.printspooler</code> # Never going to print anything</li>
+<li><code>com.android.providers.downloads.ui</code> # Ugly download button</li>
+<li>`com.android.providers.userdictionary</li>
+<li><code>com.android.stk</code> # SIM Toolkit support</li>
+<li><code>com.corpus.stb.beeiptv</code> # So the vendor gets no chance to complain again</li>
+<li><code>com.google.android.googlequicksearchbox</code> # I always hated this search app</li>
+<li><code>com.svox.pico</code> # WTF</li>
+<li><code>com.zidoo.ota.update</code> # Update might reset all my hardwork, so be safe</li>
+<li><code>com.zidoo.test</code> # Seems suspicious</li>
+</ul>
+</li>
+<li>
+<p>Set the animation speed to 0x to boost performance</p>
+</li>
+</ul>
+<p>Finally, I restarted the box several times to see if the custom launcher appears after boot everytime. Also checked the streaming apps, YouTube apps too. All of them worked like a charm!</p>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux.html">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets.html">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia.html">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos.html">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android.html">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt.html">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware.html">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt.html">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database.html">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws.html">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes.html">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
