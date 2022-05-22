@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Build a Voice Controlled SmartHome using openHAB and Alexa" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        Build a Voice Controlled SmartHome using openHAB and Alexa | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+    </head>
+    <body class="">
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">Minhaz Blog</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a></li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">Build a Voice Controlled SmartHome using openHAB and Alexa</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 17 Dec, 2018 in linux</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <p>The Amazon Alexa Marketplace has lots of third party SmartHome skills to start with. But why not  build your own SmartHome, right?</p>
+<p>First thing is, you have to create some openHAB items with proper tagname, label and type. Here I have added 4 devices in <code>[Lighting]</code> tag as <code>Switch</code> item. This tagname is very important because Amazon Alexa API uses this tagname to export device list into Alexa's SmartHome Discovery menu. I have used <code>exec1</code> binding as output trigger of the items. The binding configuration is given as <code>/home/ubuntu/mysmarthome.py %3$s %2$s</code> which means it will call <code>/home/ubuntu/mysmarthome.py</code> with <code>%3$s = Item's Programetic Name</code> (not Label) and <code>%2$s = Item's State</code>. Here is the complete item file.</p>
+<pre><code>Switch Bedroom_Fan &quot;Bedroom Fan&quot; [Lighting] {exec=&quot;&gt;[*:/home/ubuntu/mysmarthome.py %3$s %2$s]&quot;}
+Switch Bedroom_Light &quot;Bedroom Light&quot; [Lighting] {exec=&quot;&gt;[*:/home/ubuntu/mysmarthome.py %3$s %2$s]&quot;}
+Switch Livingroom_Fan &quot;Livingroom Fan&quot; [Lighting] {exec=&quot;&gt;[*:/home/ubuntu/mysmarthome.py %3$s %2$s]&quot;}
+Switch Livingroom_Light &quot;Livingroom Light&quot; [Lighting] {exec=&quot;&gt;[*:/home/ubuntu/mysmarthome.py %3$s %2$s]&quot;}
+</code></pre>
+<p>After you are done with item file, install <code>openhabcloud</code> binding, and then configure cloud service at <code>http://myopenhab.org</code> using your openHAB's UUID and secret. Once you are connected to <code>myopenhab</code> you can see the previously added 4 items there. Now it's time to configure Alexa SmartHome Service.</p>
+<p>Assuming that your Alexa is ready to use, browse Skill Marketplace and search for <code>openHAB</code>. Click <code>Enable Skill</code> there.</p>
+<p><img alt="openHAB Skill" src="https://i.imgur.com/7xkeVyt.png" /></p>
+<p>After enabling the skill, it will redirect you to <code>myopenhab.org</code> and prompt OAuth login. Select the <code>Allow</code> button.</p>
+<p><img alt="openHAB OAuth Page" src="https://i.imgur.com/HrMqflA.png" /></p>
+<p>If the credentials are correct, the Skill will be enabled and you will be prompted to <code>Discover Devices</code> page. Proceed by clicking the button.</p>
+<p><img alt="openHAB Skill Discovery" src="https://i.imgur.com/UYGEX0v.png" /></p>
+<p>If the item file is properly configured, all devices with <code>Lighting</code> tag will appear in the <code>Devices</code> menu. From now on, you can send commands to the items using Alexa's Voice API. For example, saying <code>alexa, set bedroom light on</code> will trigger openHAB's REST API and eventually execute <code>/home/ubuntu/mysmarthome.py Bedroom_Light ON</code> at your local setup.</p>
+<p><img alt="openHAB Devices" src="https://i.imgur.com/eMWcmto.png" /></p>
+<p>Here is a simple log of openHAB runtime.</p>
+<pre><code>16:42:14.078 [INFO ] [.io.openhabcloud.internal.CloudClient] - Connected to the openHAB Cloud service (UUID = ee0b4a46-82ce-4826-b6b6-e77461785df5, base URL = http://localhost:8080)
+16:42:18.260 [INFO ] [del.core.internal.ModelRepositoryImpl] - Loading model 'smarthome.items'
+16:42:19.906 [INFO ] [rthome.model.lsp.internal.ModelServer] - Started Language Server Protocol (LSP) service on port 5007
+16:42:20.925 [INFO ] [i.dashboard.internal.DashboardService] - Started Dashboard at http://1.2.3.4:8080
+16:42:20.933 [INFO ] [i.dashboard.internal.DashboardService] - Started Dashboard at https://1.2.3.4:8443
+16:43:38.335 [INFO ] [ab.core.service.AbstractActiveService] - Exec Refresh Service has been started
+16:47:57.690 [INFO ] [smarthome.event.ItemCommandEvent     ] - Item 'Bedroom_Light' received command ON
+16:47:57.725 [INFO ] [hab.binding.exec.internal.ExecBinding] - executed commandLine '/home/ubuntu/mysmarthome.py Bedroom_Light ON'
+16:48:09.639 [INFO ] [smarthome.event.ItemCommandEvent     ] - Item 'Livingroom_Light' received command ON
+16:48:09.653 [INFO ] [hab.binding.exec.internal.ExecBinding] - executed commandLine '/home/ubuntu/mysmarthome.py Livingroom_Light ON'
+16:48:34.923 [INFO ] [smarthome.event.ItemCommandEvent     ] - Item 'Bedroom_Fan' received command ON
+16:48:34.933 [INFO ] [hab.binding.exec.internal.ExecBinding] - executed commandLine '/home/ubuntu/mysmarthome.py Bedroom_Fan ON'
+</code></pre>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57632461-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57632461-1');
+        </script>
+    </body>
+</html>

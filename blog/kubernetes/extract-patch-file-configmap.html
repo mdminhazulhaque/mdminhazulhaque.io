@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Extract/Patch a File inside a ConfigMap" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        Extract/Patch a File inside a ConfigMap | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+    </head>
+    <body class="">
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">Minhaz Blog</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a></li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">Extract/Patch a File inside a ConfigMap</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 13 May, 2022 in kubernetes</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <p>ConfigMap works great when you need to mount several files inside a container virtually.</p>
+<p>Imagine you have a ConfigMap (like the following) with multiple files inside it and you want to extract/patch a single one of them.</p>
+<pre><code class="language-yml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  config.json:
+    {
+      &quot;server&quot;: &quot;0.0.0.0&quot;,
+      &quot;feature&quot;: true
+    }
+
+  hosts: |
+    127.0.0.1  localhost
+    10.10.0.1  example.com
+
+  app.conf: |
+    [main]
+    appName=Awesome App
+</code></pre>
+<p>To extract a single file say <code>config.json</code>, run the following.</p>
+<!-- {% raw %} -->
+
+<pre><code class="language-bash">kubectl get cm app-config -o go-template='{{index .data &quot;config.json&quot;}}' &gt; config.json
+</code></pre>
+<!-- {% endraw %} -->
+
+<p>To patch a single file say <code>app.conf</code> inside the ConfigMap run the following.</p>
+<pre><code class="language-bash">kubectl create cm app-config --from-file=app.conf=app.conf --dry-run=client -o yaml | \
+kubectl patch cm app-config --type merge --patch-file /dev/stdin
+</code></pre>
+<p>Hope that helps.</p>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57632461-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57632461-1');
+        </script>
+    </body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Find and Replace All Occurrences in a C++ String" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        Find and Replace All Occurrences in a C++ String | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+    </head>
+    <body class="">
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">Minhaz Blog</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a></li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">Find and Replace All Occurrences in a C++ String</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 20 Sep, 2012 in snippets</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <p>I am familiar with QString and always use its overloaded functions like
+replace(), remove() etc. It has automatic regex detection and very suitable
+for OOP. But while using pure C++ (I mean no external API or library), I faced
+some problems. I needed to find and replace ALL OCCURENCES of find text in a
+string. std::string has replace function. But it requires string iterator,
+text length etc. Again, it replaces only one string part at a time. So if you
+need a replace_all function, You can do the following. I got this from
+stackoverflow.com (unfortunately I forgot the link).</p>
+<pre><code class="language-cpp">void find_and_replace(string&amp; source, string const&amp; find, string const&amp; replace)
+{
+    for(string::size_type i = 0; (i = source.find(find, i)) != string::npos;)
+    {
+        source.replace(i, find.length(), replace);
+        i += replace.length();
+    }
+}
+</code></pre>
+<p>The program is very simple. It finds string position, replaces by given text
+length and does it until the find position is at npos.</p>
+<h3>Example</h3>
+<p>This is a sample code.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+using namespace std;
+
+void find_and_replace(string&amp; source, string const&amp; find, string const&amp; replace)
+{
+    for(string::size_type i = 0; (i = source.find(find, i)) != string::npos;)
+    {
+        source.replace(i, find.length(), replace);
+        i += replace.length();
+    }
+}
+
+int main()
+{
+    string text;
+
+    // simple replace
+    text = &quot;i have a blue house and a blue car&quot;;
+    cout &lt;&lt; &quot;string:  &quot; &lt;&lt; text &lt;&lt; endl;
+    find_and_replace(text, &quot;blue&quot;, &quot;red&quot;);
+    cout &lt;&lt; &quot;replace: &quot; &lt;&lt; text &lt;&lt; endl;
+
+    cout &lt;&lt; endl;
+
+    // simple replace 2
+    text = &quot;i love apple&quot;;
+    cout &lt;&lt; &quot;string:  &quot; &lt;&lt; text &lt;&lt; endl;
+    find_and_replace(text, &quot;apple&quot;, &quot;banana&quot;);
+    cout &lt;&lt; &quot;replace: &quot; &lt;&lt; text &lt;&lt; endl;
+
+    cout &lt;&lt; endl;
+
+    // simple replace 3
+    text = &quot;some-words-separated-by-hyphen&quot;;
+    cout &lt;&lt; &quot;string:  &quot; &lt;&lt; text &lt;&lt; endl;
+    find_and_replace(text, &quot;-&quot;, &quot;_&quot;);
+    find_and_replace(text, &quot;hyphen&quot;, &quot;underscore&quot;);
+    cout &lt;&lt; &quot;replace: &quot; &lt;&lt; text &lt;&lt; endl;
+
+    cout &lt;&lt; endl;
+
+    // replace with empty string
+    text = &quot;this string has an is missing&quot;;
+    cout &lt;&lt; &quot;string:  &quot; &lt;&lt; text &lt;&lt; endl;
+    find_and_replace(text, &quot;is&quot;, &quot;&quot;);
+    cout &lt;&lt; &quot;replace: &quot; &lt;&lt; text &lt;&lt; endl;
+
+    cout &lt;&lt; endl;
+
+    // replace with space
+    text = &quot;hello;world;&quot;;
+    cout &lt;&lt; &quot;string:  &quot; &lt;&lt; text &lt;&lt; endl;
+    find_and_replace(text, &quot;;&quot;, &quot; &quot;);
+    cout &lt;&lt; &quot;replace: &quot; &lt;&lt; text &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre>
+<h3>Output</h3>
+<pre><code>string:  i have a blue house and a blue car
+replace: i have a red house and a red car
+
+string:  i love apple
+replace: i love banana
+
+string:  some-words-separated-by-hyphen
+replace: some_words_separated_by_underscore
+
+string:  this string has an is missing
+replace: th string has an  msing
+
+string:  hello;world;
+replace: hello world 
+</code></pre>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57632461-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57632461-1');
+        </script>
+    </body>
+</html>
