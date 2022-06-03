@@ -1,0 +1,38 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+    <loc>https://mdminhazulhaque.io/</loc>
+    <lastmod>2022-05-13T00:00:00+00:00</lastmod>
+    <priority>0.50</priority>
+</url>
+<url>
+    <loc>https://mdminhazulhaque.io/blog/</loc>
+    <lastmod>2022-05-13T00:00:00+00:00</lastmod>
+    <priority>1.00</priority>
+</url>
+<url>
+    <loc>https://mdminhazulhaque.io/blog/linux/dell-latitude-5300-fingerprint-sensor-on-ubuntu.html</loc>
+    <lastmod>2022-05-13T00:00:00+00:00</lastmod>
+    <priority>1.00</priority>
+</url>
+<url>
+    <loc>https://mdminhazulhaque.io/blog/kubernetes/extract-patch-file-configmap.html</loc>
+    <lastmod>2022-05-13T00:00:00+00:00</lastmod>
+    <priority>1.00</priority>
+</url>
+<url>
+    <loc>https://mdminhazulhaque.io/blog/malaysia/malaysia-change-job.html</loc>
+    <lastmod>2020-10-19T00:00:00+00:00</lastmod>
+    <priority>1.00</priority>
+</url>
+<url>
+    <loc>https://mdminhazulhaque.io/blog/android</loc>
+    <priority>0.75</priority>
+</url>
+<url>
+    <loc>https://mdminhazulhaque.io/blog/aws</loc>
+    <priority>0.75</priority>
+</url>
+<url>
+    <loc>https://mdminhazulhaque.io/blog/database</loc>
+    <priority>0.75</priority>
+</url>
