@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="My Kubuntu 16.04 LTS Post Install Tweaks" />
+        <meta name="author" content="Md. Minhazul Haque">
+        <title>
+        My Kubuntu 16.04 LTS Post Install Tweaks | 
+        
+        Minhaz Blog
+        </title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9642838276352812" crossorigin="anonymous"></script>
+        <style>
+        body {
+            font-family: 'Ubuntu', 'Noto Serif Bengali', serif !important;
+        }
+        </style>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://mdminhazulhaque.io"
+                },
+                {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://mdminhazulhaque.io/blog"
+                },
+                {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Linux",
+                "item": "https://mdminhazulhaque.io/blog/linux"
+                },
+                {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "My Kubuntu 16.04 LTS Post Install Tweaks",
+                "item": "https://mdminhazulhaque.io/blog/linux/my-kubuntu-lts-post-install-tweaks.html"
+                }
+            ]
+        }
+        </script>
+    </head>
+    <body class="">
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/blog">Minhaz Blog</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/mdminhazulhaque">Github</a></li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">My Kubuntu 16.04 LTS Post Install Tweaks</h1>
+        <div class="text-muted fst-italic mb-2">Posted on 24 Feb, 2017 in linux</div>
+    </header>
+    <section class="mb-5">
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8038474176"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br>
+
+        <p>It has been almost 4 years since I am using Kubuntu in a row. Months ago I updated my primary OS to Kubuntu 16.04.1 LTS. In this post I am going to share some of my tweaks which I do right after installing any Kubuntu release.</p>
+<p>First thing I do after installation is removing bloats. Here is a list of packages which I find unnecessary.</p>
+<pre><code class="language-bash">apt-get purge akregator firefox skanlite telepathy-* kontact korganizer cups avahi-daemon cups-browsed cups-common cups-daemon cups-server-common cupsdcupsd avahi-daemon discoverk3b dragonplayer konversation* amarok* kaddressbook kde-telepathy-kde-telepathy-*kde-wallpapers kdeconnect kdeconnect-plasma knotes krdc ksshaskpas ktnef language-pack-en plasma-discover-updater qapt-*
+apt-get autoremove
+</code></pre>
+<p>You can keep the entries with <code>cups</code> if you use printers by the way. Again you can keep <code>k3b</code> if you have CD/DVD drive.</p>
+<p>I hate it when <code>apt</code> prompts me extra packages or tries to install packages I don't need. So I disable the feature by running</p>
+<pre><code class="language-bash">echo 'APT::Get::Install-Recommends &quot;false&quot;;' &gt;&gt; /etc/apt/apt.conf
+echo 'APT::Get::Install-Suggests &quot;false&quot;;' &gt;&gt; /etc/apt/apt.conf
+</code></pre>
+<p>Now let's add some PPA.</p>
+<pre><code class="language-bash"># caffeine, the screen inhibitor
+add-apt-repository ppa:caffeine-developers/ppa
+
+# winusb, bootable windows usb installer
+add-apt-repository ppa:colingille/freshlight
+
+# ffmpeg, no more info needed
+add-apt-repository ppa:jonathonf/ffmpeg-3
+
+# keepassx, my only favorite free password manager
+add-apt-repository ppa:keepassx/daily
+
+# official libreoffice ppa
+add-apt-repository ppa:libreoffice/ppa
+
+# graphical sqlite database browser
+add-apt-repository ppa:linuxgndu/sqlitebrowser
+
+# the best and easy to use screen recorder
+add-apt-repository ppa:maarten-baert/simplescreenrecorder
+
+# the best music player on ubuntu
+add-apt-repository ppa:me-davidsansome/clementine
+
+# official vlc ppa
+add-apt-repository ppa:videolan/sta
+
+# latest virtualbox ppa
+add-apt-repository ppa:virtualbox/ppa
+
+# jre and jdk from oracle
+add-apt-repository ppa:webupd8team/java
+</code></pre>
+<p>I want 32bit apps to run on my stystem too. So I did the following thing.</p>
+<pre><code class="language-bash">dpkg --add-architecture i386
+</code></pre>
+<p>Then I updated the package indexes by running</p>
+<pre><code class="language-bash">apt-get update
+</code></pre>
+<p>Now comes the list of must needed packages I use.</p>
+<pre><code class="language-bash">apt-get install aria2 autoconf baobab bcmwl-kernel-source bison boot-repair build-essential clementine cmake cmake-qt-gui curl darktable dcfldd d-feet eclipse exfat-fuse exfat-utils ffmpeg filezilla flex gawk gcc-multilib gimp git git-core gnome-disk-utility gparted ia32-libs inkscape kde-wallpapers keepassx lib32 lib32bz2-1.0 lib32gcc lib32ncurses5 lib32stdc++ lib32stdc++6 lib32z1 libav-tools libc6:i386 libgmp-dev libmosquitto-dev libmpc-dev libmpfr-dev libncurses5-dev libncurses5:i386 libssl-dev libstdc++6:i386 libx264 lm-sensors lua5.1 luarocks lua-sec mailutils makeinfo mercurial mosquitto-clients mosquitto-dev muon nginx nginx-full openssh-server php7-cli pick picocom qt4-qmake qt5-qmake qtchooser qtcreator shim shutter sqlitebrowser sshpass subversion testdisk texinfo unetbootin unrar unzip virtualbox vlc x264 x265 youtube-dl
+</code></pre>
+<p>As I am a Lua developer, I need some Lua modules now and often. I use <code>luarocks</code> for installing those.</p>
+<pre><code>luarocks install mosquitto json-lua luaposix luars232 penlight
+</code></pre>
+<p>You can update the UEFI label of the system by running</p>
+<pre><code class="language-bash">grub-install --bootloader-id Kubuntu /dev/sda
+</code></pre>
+<p>Almost there. Now I need to configure the ACPI, CPU and GPU thermal sensors.</p>
+<pre><code class="language-bash">yes | sensors-detect
+</code></pre>
+<p>Firewall is turned on by default. So I unblock SSH, FTP and HTTP port on my machine.</p>
+<pre><code>ufw enable
+ufw allow ssh
+ufw allow http
+ufw allow ftp
+</code></pre>
+<p>I don't want SSH to turn on everytime I boot my PC automatically. So I disable SSH service.</p>
+<pre><code class="language-bash">systemctl disable sshd.service
+</code></pre>
+<p>I love to see the asterick <code>*</code> mark when entering password for <code>sudo</code>. I do it by running <code>visudo</code> and adding <code>pwfeedback</code> after <code>Defaults</code>.</p>
+<pre><code>Defaults env_reset,pwfeedback
+</code></pre>
+<p>There is one annoying thing left. Perl based utilities often warn me about <code>LC</code>. So I hardcoded my <code>LC</code> by doing this.</p>
+<pre><code class="language-bash">echo LC_ALL=\&quot;en_US.utf8\&quot; &gt;&gt; /etc/environment
+</code></pre>
+<p>Well, that's all. I will be adding more lines if I find out more tweaks and update the list of packages from time to time.</p>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9642838276352812"
+     data-ad-slot="8294162148"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <script>hljs.highlightAll();</script>
+    </section>
+</article>
+<!-- Comments section-->
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;	
+            dsq.src = 'https://bitsfromminhaz.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);	
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">Categories</div>
+                        <ul class="list-group list-group-flush">
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/linux">
+                                linux
+                                <span class="badge text-bg-dark">30</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/snippets">
+                                snippets
+                                <span class="badge text-bg-dark">29</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/malaysia">
+                                malaysia
+                                <span class="badge text-bg-dark">9</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/macos">
+                                macos
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/android">
+                                android
+                                <span class="badge text-bg-dark">7</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/qt">
+                                qt
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/hardware">
+                                hardware
+                                <span class="badge text-bg-dark">5</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/openwrt">
+                                openwrt
+                                <span class="badge text-bg-dark">4</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/database">
+                                database
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/aws">
+                                aws
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                            <a class="list-group-item d-flex justify-content-between align-items-start" href="/blog/kubernetes">
+                                kubernetes
+                                <span class="badge text-bg-dark">1</span>
+                            </a>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Md. Minhazul Haque 2012-2022</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57632461-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57632461-1');
+        </script>
+    </body>
+</html>
