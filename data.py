@@ -19,7 +19,7 @@ projects = [
     "traefik-converter",
 ]
 
-token = os.getenv("GITHUB_TOKEN")
+token = os.getenv("GH_TOKEN")
 
 headers = {"Authorization": f"Bearer {token}"}
 

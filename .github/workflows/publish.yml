@@ -26,6 +26,8 @@ jobs:
           python data.py
           python build.py
           cp data.json public
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
