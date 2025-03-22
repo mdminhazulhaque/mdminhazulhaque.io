@@ -26,20 +26,18 @@ headers = {"Authorization": f"Bearer {token}"}
 data = []
 
 for p in projects:
-    print("🚀", p)
-
-    query = f"""{{
-        repository(owner: "{owner}", name: "{p}")
-        {{
-            openGraphImageUrl
-        }}
-    }}"""
-
     item = {
         "name": p
     }
 
     try:
+        query = f"""{{
+            repository(owner: "{owner}", name: "{p}")
+            {{
+                openGraphImageUrl
+            }}
+        }}"""
+
         response = requests.post("https://api.github.com/graphql", json={'query': query}, headers=headers)
         item["image"] = response.json()["data"]["repository"]["openGraphImageUrl"]
     except:
@@ -56,6 +54,8 @@ for p in projects:
         item["description"] = response.json()["description"]
     except:
         pass
+
+    print("🚀", str(item))
 
     data.append(item)
 
