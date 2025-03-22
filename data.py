@@ -13,7 +13,7 @@ projects = [
     "gcloud-cli-cheatsheet",
     "probhat-osx",
     "probhat.im",
-    "python-bitbucket",
+    "python-bitbucket-cli",
     "ruet-thesis-template-latex",
     "ssh-tunnel-manager",
     "traefik-converter",
