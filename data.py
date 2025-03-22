@@ -25,7 +25,7 @@ headers = {"Authorization": f"Bearer {token}"}
 
 data = []
 
-for p in projects:
+for p in sorted(projects):
     item = {
         "name": p
     }
