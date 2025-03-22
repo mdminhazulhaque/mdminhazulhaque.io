@@ -17,6 +17,7 @@ projects = [
     "ruet-thesis-template-latex",
     "ssh-tunnel-manager",
     "traefik-converter",
+    # dummy
 ]
 
 token = os.getenv("GH_TOKEN")
