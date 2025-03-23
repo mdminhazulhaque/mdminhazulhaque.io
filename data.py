@@ -17,6 +17,8 @@ projects = [
     "ruet-thesis-template-latex",
     "ssh-tunnel-manager",
     "traefik-converter",
+    "python-desco",
+    "python-bpdb",
 ]
 
 token = os.getenv("GH_TOKEN")
