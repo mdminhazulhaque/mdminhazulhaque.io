@@ -19,6 +19,7 @@ projects = [
     "traefik-converter",
     "python-desco",
     "python-bpdb",
+    "python-nesco",
 ]
 
 token = os.getenv("GH_TOKEN")
