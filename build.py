@@ -11,3 +11,5 @@ content = template.render(projects=projects)
 
 with open("./public/index.html", "w") as html:
     html.write(content)
+
+print("Build successful! Check the public/index.html file.")
