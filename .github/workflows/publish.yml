@@ -23,11 +23,7 @@ jobs:
         with:
           python-version: '3.x'
       - name: Install Dependencies and Build Page
-        run: |
-          pip install -r requirements.txt
-          python data.py
-          python build.py
-          cp data.json public
+        run: python data.py
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Upload artifact
