@@ -26,16 +26,11 @@ jobs:
         run: |
           pip install requests
           python gen-data.py
+          rm -rf *.py .gitignore .github/ __pycache__/
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
-        with:
-          exclude: |
-            *.py
-            .gitignore
-            .github/
-            __pycache__/
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
