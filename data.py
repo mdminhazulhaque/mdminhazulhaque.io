@@ -62,5 +62,5 @@ for p in sorted(projects):
 
     data.append(item)
 
-with open("data.json", "w") as fp:
+with open("public/data.json", "w") as fp:
     json.dump(data, fp, indent=2)
