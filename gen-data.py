@@ -8,6 +8,7 @@ projects = [
     "alias-generator",
     "awesome-bangla-parenting",
     "aws-cli-cheatsheet",
+    "aws-resource-watcher",
     "aws-stale-dns-finder",
     "django-baby-log",
     "gcloud-cli-cheatsheet",
