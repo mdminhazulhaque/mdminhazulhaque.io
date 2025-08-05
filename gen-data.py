@@ -10,6 +10,7 @@ projects = [
     "aws-cli-cheatsheet",
     "aws-resource-watcher",
     "aws-stale-dns-finder",
+    "bangladeshi-parcel-tracker",
     "django-baby-log",
     "gcloud-cli-cheatsheet",
     "probhat-macos",
