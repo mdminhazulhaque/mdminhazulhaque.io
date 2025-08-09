@@ -22,6 +22,8 @@ projects = [
     "python-desco",
     "python-bpdb",
     "python-nesco",
+    "kube-git-backup",
+    "aws-resource-explorer",
 ]
 
 token = os.getenv("GH_TOKEN")
