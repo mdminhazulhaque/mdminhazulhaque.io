@@ -2,6 +2,9 @@ import requests
 import json
 import os
 import time
+from PIL import Image
+from urllib.parse import urlparse
+import io
 
 owner = "mdminhazulhaque"
 
@@ -34,6 +37,40 @@ if not token:
     exit(1)
 
 headers = {"Authorization": f"Bearer {token}"}
+
+# Create images directory if it doesn't exist
+os.makedirs("images", exist_ok=True)
+
+def download_and_process_image(image_url, repo_name):
+    """Download image, convert to WebP, resize to 640x320, and save locally"""
+    if not image_url:
+        return None
+    
+    try:
+        # Download the image
+        response = requests.get(image_url, timeout=30)
+        response.raise_for_status()
+        
+        # Open image with PIL
+        img = Image.open(io.BytesIO(response.content))
+        
+        # Convert to RGB if necessary (for WebP compatibility)
+        if img.mode in ('RGBA', 'LA', 'P'):
+            img = img.convert('RGB')
+        
+        # Resize to 640x320
+        img = img.resize((640, 320), Image.Resampling.LANCZOS)
+        
+        # Save as WebP
+        local_filename = f"images/{repo_name}.webp"
+        img.save(local_filename, 'WEBP', quality=85, optimize=True)
+        
+        print(f"📸 Downloaded and processed image for {repo_name}")
+        return local_filename
+        
+    except Exception as e:
+        print(f"❌ Error processing image for {repo_name}: {e}")
+        return None
 
 data = []
 
@@ -79,11 +116,17 @@ for i in range(0, len(sorted_projects), batch_size):
         
         for key, repo_data in repos_data.items():
             if repo_data:  # Check if repository data exists
+                # Download and process the image
+                local_image_path = download_and_process_image(repo_data["openGraphImageUrl"], repo_data["name"])
+                
                 item = {
                     "name": repo_data["name"],
-                    "image": repo_data["openGraphImageUrl"],
                     "description": repo_data["description"]
                 }
+                
+                # Set local image path if download was successful
+                if local_image_path:
+                    item["image"] = local_image_path
                 
                 # Only set URL if homepage URL is available (skip repository URL)
                 if repo_data["homepageUrl"]:
@@ -117,8 +160,14 @@ for i in range(0, len(sorted_projects), batch_size):
                 response = requests.post("https://api.github.com/graphql", json={'query': query}, headers=headers)
                 repo_data = response.json()["data"]["repository"]
                 
-                item["image"] = repo_data["openGraphImageUrl"]
+                # Download and process the image
+                local_image_path = download_and_process_image(repo_data["openGraphImageUrl"], repo_data["name"])
+                
                 item["description"] = repo_data["description"]
+                
+                # Set local image path if download was successful
+                if local_image_path:
+                    item["image"] = local_image_path
                 
                 # Only set URL if homepage URL is available (skip repository URL)
                 if repo_data["homepageUrl"]:

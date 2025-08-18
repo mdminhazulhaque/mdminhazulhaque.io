@@ -25,7 +25,7 @@ jobs:
           python-version: '3.x'
       - name: Install Dependencies and Build Page
         run: |
-          pip install requests
+          pip install requests pillow
           python gen-data.py
           rm -rf *.py .gitignore .github/ __pycache__/
         env:
