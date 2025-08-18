@@ -27,10 +27,10 @@ projects = [
     "aws-resource-explorer",
 ]
 
-token = os.getenv("GH_TOKEN")
+token = os.getenv("GITHUB_TOKEN")
 
 if not token:
-    print("❌ Error: GH_TOKEN environment variable is not set")
+    print("❌ Error: GITHUB_TOKEN environment variable is not set")
     exit(1)
 
 headers = {"Authorization": f"Bearer {token}"}
