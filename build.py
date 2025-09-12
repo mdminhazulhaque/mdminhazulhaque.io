@@ -9,25 +9,26 @@ import io
 owner = "mdminhazulhaque"
 
 projects = [
+    "ai-prescriptions-scanner",
     "alias-generator",
     "awesome-bangla-parenting",
     "aws-cli-cheatsheet",
+    "aws-resource-explorer",
     "aws-resource-watcher",
     "aws-stale-dns-finder",
     "bangladeshi-parcel-tracker",
     "django-baby-log",
     "gcloud-cli-cheatsheet",
+    "kube-git-backup",
     "probhat-macos",
     "probhat-web",
     "python-bitbucket-cli",
+    "python-bpdb",
+    "python-desco",
+    "python-nesco",
     "ruet-thesis-template-latex",
     "ssh-tunnel-manager",
     "traefik-converter",
-    "python-desco",
-    "python-bpdb",
-    "python-nesco",
-    "kube-git-backup",
-    "aws-resource-explorer",
 ]
 
 token = os.getenv("GITHUB_TOKEN")
