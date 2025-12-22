@@ -1,33 +1,41 @@
-# mdminhazulhaque.io
+# Hi, I'm Minhaz 👋
 
-A simple portfolio website showcasing my GitHub projects.
+🏗️ Solutions Architect<br>
+🛠️ Platform Engineer
 
-## Features
+## What I'm up to 👨‍💻
 
-- Automatically fetches project data from GitHub using GraphQL API
-- Displays project cards with images, descriptions, and links
-- Responsive design
-- Deployed on GitHub Pages
+🧱 Building Platforms<br>
+📐 Architecting Solutions<br>
+🧠 Crafting AI Products<br>
+🛡️ Handling Security<br>
 
-## Development
+## Projects 📂
 
-The site uses a Python script to generate project data:
+💊 [**ai-prescriptions-scanner**](https://github.com/mdminhazulhaque/ai-prescriptions-scanner): Your prescription's financial translator<br>
+🐚 [**alias-generator**](https://alias-generator.mdminhazulhaque.io/): Generate and download custom bash/zsh aliases to boost your terminal productivity<br>
+👶 [**awesome-bangla-parenting**](http://parenting.mdminhazulhaque.io/): A curated list of Bangladeshi parenting resources (websites, apps, shops & more)<br>
+☁ [**aws-cli-cheatsheet**](https://aws-cli-cheatsheet.mdminhazulhaque.io/): ️ aws CLI + jq = Make life easier<br>
+🔍 [**aws-resource-explorer**](https://github.com/mdminhazulhaque/aws-resource-explorer): Multi-account, multi-region AWS resource discovery<br>
+🟠 [**aws-resource-watcher**](https://github.com/mdminhazulhaque/aws-resource-watcher): Monitor AWS resources and get email notifications on changes<br>
+♻ [**aws-stale-dns-finder**](https://github.com/mdminhazulhaque/aws-stale-dns-finder): ️ Scan, analyze, and clean your AWS DNS records<br>
+🚚 [**bangladeshi-parcel-tracker**](https://pypi.org/project/bangladeshi-parcel-tracker/): Track parcels across Bangladesh with ease - Redx, Steadfast, Pathao, Rokomari & Sundarban<br>
+👶 [**django-baby-log**](https://github.com/mdminhazulhaque/django-baby-log): Baby Event Management using Django<br>
+☁ [**gcloud-cli-cheatsheet**](https://gcloud-cli-cheatsheet.mdminhazulhaque.io/): ️ gcloud CLI + jq = Make life easier<br>
+💾 [**kube-git-backup**](https://github.com/mdminhazulhaque/kube-git-backup): Git-powered backups for your Kubernetes cluster<br>
+🔡 [**probhat-macos**](https://probhat.mdminhazulhaque.io/): Probhat keylayout for macOS<br>
+🌐 [**probhat-web**](https://probhat.mdminhazulhaque.io/): Online Probhat Keyboard<br>
+🔧 [**python-bitbucket-cli**](https://pypi.org/project/python-bitbucket-cli/): Manage Bitbucket repos with the CLI<br>
+⚡ [**python-bpdb**](https://pypi.org/project/bpdb/): Python module for BPDB Smart Meters<br>
+⚡ [**python-desco**](https://pypi.org/project/desco/): Python module for Desco Smart Meters<br>
+⚡ [**python-nesco**](https://pypi.org/project/nesco/): Python module for Nesco Smart Meters<br>
+📓 [**ruet-thesis-template-latex**](https://github.com/mdminhazulhaque/ruet-thesis-template-latex): A LaTeX template for writing thesis report for RUET<br>
+🔓 [**ssh-tunnel-manager**](https://github.com/mdminhazulhaque/ssh-tunnel-manager): A PyQt GUI for managing SSH tunnels<br>
+🔀 [**traefik-converter**](https://traefik-converter.mdminhazulhaque.io/): IngressRoute and Ingress Converter<br>
 
-```bash
-# Set GitHub token (for local development)
-export GITHUB_TOKEN=your_token_here
+## Find me 🌎
 
-# Generate project data
-python3 gen-data.py
-```
-
-## Deployment
-
-The site automatically deploys to GitHub Pages when changes are pushed to the `master` branch.
-
-## Tech Stack
-
-- HTML, CSS, JavaScript
-- Python (for data generation)
-- GitHub GraphQL API
-- GitHub Pages
+🚀 [Website](https://mdminhazulhaque.io)<br>
+📝 [Blog](https://blog.mdminhazulhaque.io/)<br>
+💼 [LinkedIn](https://www.linkedin.com/in/mdminhazulhaque/)<br>
+🐙 [GitHub](https://github.com/mdminhazulhaque)

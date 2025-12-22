@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Md. Minhazul Haque">
+    <meta name="description" content="AI Engineer & DevOps Architect">
+    <meta name="google-site-verification" content="QR4wpMs0YQ9eS1V2ix6s8FJysWRIbN5_dxqFYyGUkvc">
+    <link rel="canonical" href="https://mdminhazulhaque.io">
+    <meta name="generator" content="minhaz/cli" />
+    <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <title>Md. Minhazul Haque | Platform Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZT0WQSFEYP"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZT0WQSFEYP');
+    </script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Md. Minhazul Haque",
+        "alternateName": "Minhaz",
+        "jobTitle": "AI Engineer & DevOps Architect",
+        "description": "AI Engineer and DevOps Architect who builds innovative solutions and contributes to open source projects. Passionate about creating clean, efficient, and scalable applications.",
+        "url": "https://mdminhazulhaque.io",
+        "sameAs": [
+            "https://github.com/mdminhazulhaque",
+            "https://linkedin.com/in/mdminhazulhaque",
+            "https://blog.mdminhazulhaque.io"
+        ],
+        "knowsAbout": [
+            "Artificial Intelligence",
+            "Machine Learning",
+            "DevOps",
+            "Cloud Architecture",
+            "Software Development",
+            "Open Source",
+            "Infrastructure as Code",
+            "Kubernetes",
+            "Docker",
+            "Python",
+            "JavaScript"
+        ],
+        "hasOccupation": {
+            "@type": "Occupation",
+            "name": "AI Engineer & DevOps Architect",
+            "occupationLocation": {
+                "@type": "Place",
+                "name": "Global (Remote)"
+            },
+            "skills": [
+                "Artificial Intelligence",
+                "DevOps Engineering",
+                "Cloud Architecture",
+                "Infrastructure Design",
+                "Software Development"
+            ]
+        },
+        "alumniOf": {
+            "@type": "Organization",
+            "name": "Rajshahi University of Engineering and Technology, Bangladesh"
+        }
+    }
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth transition for theme switching */
+        body, .card, header, footer { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+    </style>
+    <script>
+        // Check local storage or system preference on load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+    </script>
+</head>
+<body class="antialiased bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-[#e2e8f0] selection:bg-sky-500 selection:text-white">
+
+    <button onclick="toggleTheme()" class="fixed top-6 right-6 p-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-yellow-400 hover:scale-110 transition-transform z-50 shadow-md">
+        <svg class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        <svg class="w-6 h-6 block dark:hidden text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+    </button>
+
+    <div class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+
+        <header class="mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold dark:text-white text-slate-900 mb-4">Hi, I'm Minhaz <span class="animate-pulse inline-block">👋</span></h1>
+            <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-lg text-slate-600 dark:text-slate-400">
+                <span class="flex items-center gap-2"><span class="text-sky-600 dark:text-sky-400">🏗️</span> Solutions Architect</span>
+                <span class="hidden md:inline opacity-50">•</span>
+                <span class="flex items-center gap-2"><span class="text-sky-600 dark:text-sky-400">🛠️</span> Platform Engineer</span>
+            </div>
+        </header>
+
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold dark:text-white text-slate-900 mb-6 flex items-center gap-2">
+                👨‍💻 What I'm up to
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="card bg-white dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center gap-3 shadow-sm dark:shadow-none">
+                    <span class="text-2xl">🧱</span> <span class="font-medium">Building Platforms</span>
+                </div>
+                <div class="card bg-white dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center gap-3 shadow-sm dark:shadow-none">
+                    <span class="text-2xl">📐</span> <span class="font-medium">Architecting Solutions</span>
+                </div>
+                <div class="card bg-white dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center gap-3 shadow-sm dark:shadow-none">
+                    <span class="text-2xl">🧠</span> <span class="font-medium">Crafting AI Products</span>
+                </div>
+                <div class="card bg-white dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center gap-3 shadow-sm dark:shadow-none">
+                    <span class="text-2xl">🛡️</span> <span class="font-medium">Handling Security</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold dark:text-white text-slate-900 mb-6 flex items-center gap-2">
+                📂 Projects
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for project in projects %}
+                <a href="{{ project.url }}" target="_blank" class="card group block bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-sky-500 dark:hover:border-sky-400 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl mt-1">{{ project.emoji }}</span>
+                        <div>
+                            <h3 class="text-sky-600 dark:text-sky-400 font-mono font-semibold mb-1 group-hover:underline">{{ project.name }}</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ project.description }}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+
+        <footer class="border-t border-slate-200 dark:border-slate-800 pt-8 mt-12 mb-8">
+            <h2 class="text-xl font-bold dark:text-white text-slate-900 mb-6">🌎 Find me</h2>
+            <div class="flex flex-wrap gap-6">
+                <a href="https://mdminhazulhaque.io" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-white transition-colors">
+                    <span>🚀</span> Website
+                </a>
+                <a href="https://blog.mdminhazulhaque.io/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-white transition-colors">
+                    <span>📝</span> Blog
+                </a>
+                <a href="https://www.linkedin.com/in/mdminhazulhaque/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-white transition-colors">
+                    <span>💼</span> LinkedIn
+                </a>
+                <a href="https://github.com/mdminhazulhaque" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-white transition-colors">
+                    <span>🐙</span> GitHub
+                </a>
+            </div>
+            <p class="mt-8 text-sm text-slate-500 text-center">
+                &copy; <script>document.write(new Date().getFullYear())</script> Md Minhazul Haque.
+            </p>
+        </footer>
+
+    </div>
+</body>
+</html>

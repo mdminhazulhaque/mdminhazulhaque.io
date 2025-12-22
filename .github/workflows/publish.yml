@@ -25,9 +25,11 @@ jobs:
           python-version: '3.x'
       - name: Install Dependencies and Build Page
         run: |
-          pip install requests pillow
-          python build.py
-          rm -rf *.py .gitignore .github/ __pycache__/ README.md
+          pip install requests jinja2
+          python fetch_projects.py
+          python generate_html.py
+          python generate_readme.py
+          rm -rf *.py .gitignore .github/ __pycache__/ *.j2 data.json projects.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload artifact

@@ -2,9 +2,7 @@ import requests
 import json
 import os
 import time
-from PIL import Image
-from urllib.parse import urlparse
-import io
+import re
 
 owner = "mdminhazulhaque"
 
@@ -39,41 +37,24 @@ if not token:
 
 headers = {"Authorization": f"Bearer {token}"}
 
-# Create images directory if it doesn't exist
-os.makedirs("images", exist_ok=True)
+def extract_emoji_and_description(text):
+    """Extract emoji from the beginning of description and return both separately"""
+    if not text:
+        return None, text
 
-def download_and_process_image(image_url, repo_name):
-    """Download image, convert to WebP, resize to 640x320, and save locally"""
-    if not image_url:
-        return None
-    
-    try:
-        # Download the image
-        response = requests.get(image_url, timeout=30)
-        response.raise_for_status()
-        
-        # Open image with PIL
-        img = Image.open(io.BytesIO(response.content))
-        
-        # Convert to RGB if necessary (for WebP compatibility)
-        if img.mode in ('RGBA', 'LA', 'P'):
-            img = img.convert('RGB')
-        
-        # Resize to 640x320
-        img = img.resize((640, 320), Image.Resampling.LANCZOS)
-        
-        # Save as WebP
-        local_filename = f"images/{repo_name}.webp"
-        img.save(local_filename, 'WEBP', quality=85, optimize=True)
-        
-        print(f"📸 Downloaded and processed image for {repo_name}")
-        return local_filename
-        
-    except Exception as e:
-        print(f"❌ Error processing image for {repo_name}: {e}")
-        return None
+    # Match emoji at the start of the string (with optional whitespace)
+    emoji_pattern = r'^([\U0001F300-\U0001F9FF\U0001F600-\U0001F64F\U0001F680-\U0001F6FF\U00002600-\U000027BF\u2600-\u26FF\u2700-\u27BF]+)\s*(.*)$'
+    match = re.match(emoji_pattern, text)
+
+    if match:
+        emoji = match.group(1)
+        description = match.group(2)
+        return emoji, description
+
+    return None, text
 
 data = []
+projects_data = []
 
 def fetch_repositories_batch(batch_projects):
     """Fetch repository data for a batch of projects"""
@@ -82,7 +63,6 @@ def fetch_repositories_batch(batch_projects):
         repositories_query += f"""
         repo{i}: repository(owner: "{owner}", name: "{p}") {{
             name
-            openGraphImageUrl
             description
             homepageUrl
         }}"""
@@ -117,24 +97,37 @@ for i in range(0, len(sorted_projects), batch_size):
         
         for key, repo_data in repos_data.items():
             if repo_data:  # Check if repository data exists
-                # Download and process the image
-                local_image_path = download_and_process_image(repo_data["openGraphImageUrl"], repo_data["name"])
-                
+                # Extract emoji and clean description
+                emoji, clean_description = extract_emoji_and_description(repo_data["description"])
+
                 item = {
                     "name": repo_data["name"],
                     "description": repo_data["description"]
                 }
-                
-                # Set local image path if download was successful
-                if local_image_path:
-                    item["image"] = local_image_path
-                
+
                 # Only set URL if homepage URL is available (skip repository URL)
                 if repo_data["homepageUrl"]:
                     item["url"] = repo_data["homepageUrl"]
-                    
+
                 print("🚀", str(item))
                 data.append(item)
+
+                # Create projects.json entry
+                project_item = {
+                    "name": repo_data["name"],
+                    "description": clean_description
+                }
+
+                if emoji:
+                    project_item["emoji"] = emoji
+
+                # Link to demo if homepage exists, otherwise link to GitHub
+                if repo_data["homepageUrl"]:
+                    project_item["url"] = repo_data["homepageUrl"]
+                else:
+                    project_item["url"] = f"https://github.com/{owner}/{repo_data['name']}"
+
+                projects_data.append(project_item)
             else:
                 print(f"❌ No data found for repository key: {key}")
                 
@@ -152,7 +145,7 @@ for i in range(0, len(sorted_projects), batch_size):
                 query = f"""{{
                     repository(owner: "{owner}", name: "{p}")
                     {{
-                        openGraphImageUrl
+                        name
                         description
                         homepageUrl
                     }}
@@ -160,26 +153,39 @@ for i in range(0, len(sorted_projects), batch_size):
 
                 response = requests.post("https://api.github.com/graphql", json={'query': query}, headers=headers)
                 repo_data = response.json()["data"]["repository"]
-                
-                # Download and process the image
-                local_image_path = download_and_process_image(repo_data["openGraphImageUrl"], repo_data["name"])
-                
+
+                # Extract emoji and clean description
+                emoji, clean_description = extract_emoji_and_description(repo_data["description"])
+
                 item["description"] = repo_data["description"]
-                
-                # Set local image path if download was successful
-                if local_image_path:
-                    item["image"] = local_image_path
-                
+
                 # Only set URL if homepage URL is available (skip repository URL)
                 if repo_data["homepageUrl"]:
                     item["url"] = repo_data["homepageUrl"]
-                    
+
                 print("🚀", str(item))
                 data.append(item)
-                
+
+                # Create projects.json entry
+                project_item = {
+                    "name": repo_data["name"],
+                    "description": clean_description
+                }
+
+                if emoji:
+                    project_item["emoji"] = emoji
+
+                # Link to demo if homepage exists, otherwise link to GitHub
+                if repo_data["homepageUrl"]:
+                    project_item["url"] = repo_data["homepageUrl"]
+                else:
+                    project_item["url"] = f"https://github.com/{owner}/{repo_data['name']}"
+
+                projects_data.append(project_item)
+
                 # Small delay between individual requests
                 time.sleep(0.1)
-                    
+
             except Exception as individual_error:
                 print(f"❌ Error fetching data for {p}: {individual_error}")
                 continue
@@ -191,4 +197,8 @@ for i in range(0, len(sorted_projects), batch_size):
 with open("data.json", "w") as fp:
     json.dump(data, fp, indent=2)
 
+with open("projects.json", "w") as fp:
+    json.dump(projects_data, fp, indent=2)
+
 print(f"✅ Successfully processed {len(data)} repositories and saved to data.json")
+print(f"✅ Successfully generated projects.json with {len(projects_data)} projects")
