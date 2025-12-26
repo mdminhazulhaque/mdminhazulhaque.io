@@ -43,7 +43,8 @@ def extract_emoji_and_description(text):
         return None, text
 
     # Match emoji at the start of the string (with optional whitespace)
-    emoji_pattern = r'^([\U0001F300-\U0001F9FF\U0001F600-\U0001F64F\U0001F680-\U0001F6FF\U00002600-\U000027BF\u2600-\u26FF\u2700-\u27BF]+)\s*(.*)$'
+    # Includes variation selectors (\uFE00-\uFE0F) and zero-width joiner (\u200D) for complete emoji sequences
+    emoji_pattern = r'^([\U0001F300-\U0001F9FF\U0001F600-\U0001F64F\U0001F680-\U0001F6FF\U00002600-\U000027BF\u2600-\u26FF\u2700-\u27BF\uFE00-\uFE0F\u200D\U0001F3FB-\U0001F3FF]+)\s*(.*)$'
     match = re.match(emoji_pattern, text)
 
     if match:
