@@ -48,10 +48,10 @@ def extract_emoji_and_description(text):
 
     if match:
         emoji = match.group(1)
-        description = match.group(2)
+        description = match.group(2).strip()
         return emoji, description
 
-    return None, text
+    return None, text.strip() if text else text
 
 data = []
 projects_data = []
