@@ -196,11 +196,7 @@ for i in range(0, len(sorted_projects), batch_size):
     if i + batch_size < len(sorted_projects):
         time.sleep(1)
 
-with open("data.json", "w") as fp:
-    json.dump(data, fp, indent=2)
-
 with open("projects.json", "w") as fp:
     json.dump(projects_data, fp, indent=2)
 
-print(f"✅ Successfully processed {len(data)} repositories and saved to data.json")
 print(f"✅ Successfully generated projects.json with {len(projects_data)} projects")
