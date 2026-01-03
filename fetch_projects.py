@@ -23,6 +23,7 @@ projects = [
     "python-bitbucket-cli",
     "python-bpdb",
     "python-desco",
+    "python-dpdc",
     "python-nesco",
     "ruet-thesis-template-latex",
     "ssh-tunnel-manager",
