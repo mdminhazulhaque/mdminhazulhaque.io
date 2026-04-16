@@ -6,6 +6,17 @@ Generate index.html from Jinja2 template using projects.json data
 import json
 from jinja2 import Template
 
+
+def emoji_to_github_img(emoji):
+    """Convert a Unicode emoji character to a GitHub CDN <img> tag."""
+    # Strip variation selectors (U+FE0E, U+FE0F)
+    cleaned = emoji.replace("\ufe0e", "").replace("\ufe0f", "")
+    # Build codepoint string (hyphen-separated for multi-codepoint emoji like ZWJ sequences)
+    codepoints = "-".join(f"{ord(c):x}" for c in cleaned)
+    url = f"https://github.githubassets.com/images/icons/emoji/unicode/{codepoints}.png"
+    return f'<img class="g-emoji" src="{url}" alt="{emoji}">'
+
+
 def render_html():
     """Generate index.html from template and projects data"""
 
@@ -20,6 +31,10 @@ def render_html():
     except json.JSONDecodeError as e:
         print(f"❌ Error: Invalid JSON in projects.json: {e}")
         return
+
+    # Convert emoji to GitHub CDN images
+    for project in projects:
+        project["emoji_img"] = emoji_to_github_img(project["emoji"])
 
     # Read template
     try:
@@ -39,6 +54,7 @@ def render_html():
         f.write(rendered_html)
 
     print("✅ Successfully generated index.html")
+
 
 if __name__ == "__main__":
     render_html()

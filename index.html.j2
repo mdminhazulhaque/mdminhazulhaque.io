@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,8 +31,6 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
     <title>Md. Minhazul Haque | Platform Engineer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZT0WQSFEYP"></script>
@@ -94,92 +92,289 @@
         }
     }
     </script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+
     <style>
-        /* Smooth transition for theme switching */
-        body, .card, header, footer { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
-    </style>
-    <script>
-        // Check local storage or system preference on load
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
+        /* ── GitHub Markdown CSS — faithful to github.com rendering ── */
+
+        :root {
+            --color-fg-default: #1f2328;
+            --color-fg-muted: #656d76;
+            --color-fg-accent: #0969da;
+            --color-canvas-default: #ffffff;
+            --color-canvas-subtle: #f6f8fa;
+            --color-border-default: #d1d9e0;
+            --color-border-muted: hsla(210, 18%, 87%, 0.4);
+            --color-neutral-muted: rgba(175, 184, 193, 0.2);
+            --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
         }
 
-        function toggleTheme() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
+        [data-theme="dark"] {
+            --color-fg-default: #e6edf3;
+            --color-fg-muted: #8b949e;
+            --color-fg-accent: #58a6ff;
+            --color-canvas-default: #0d1117;
+            --color-canvas-subtle: #161b22;
+            --color-border-default: #30363d;
+            --color-border-muted: hsla(215, 8%, 47%, 0.4);
+            --color-neutral-muted: rgba(110, 118, 129, 0.4);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            color: var(--color-fg-default);
+            background-color: var(--color-canvas-default);
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        /* ── Container — matches GitHub readme width ── */
+
+        .markdown-body {
+            max-width: 1012px;
+            margin: 0 auto;
+            padding: 32px 28px 48px;
+        }
+
+        @media (min-width: 768px) {
+            .markdown-body {
+                padding: 48px 40px 64px;
             }
         }
+
+        /* ── Headings ── */
+
+        h1, h2, h3 {
+            font-weight: 600;
+            color: var(--color-fg-default);
+            margin-top: 24px;
+            margin-bottom: 16px;
+            line-height: 1.25;
+        }
+
+        h1 {
+            font-size: 2em;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--color-border-default);
+        }
+
+        h2 {
+            font-size: 1.5em;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--color-border-default);
+        }
+
+        h3 {
+            font-size: 1.25em;
+        }
+
+        h1:first-child,
+        h2:first-child {
+            margin-top: 0;
+        }
+
+        /* ── Paragraphs ── */
+
+        p {
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: var(--color-fg-default);
+        }
+
+        /* ── Links ── */
+
+        a {
+            color: var(--color-fg-accent);
+            text-decoration: underline;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Lists ── */
+
+        ul {
+            padding-left: 0;
+            margin-top: 0;
+            margin-bottom: 16px;
+            list-style: none;
+        }
+
+        li {
+            margin-top: 0.25em;
+        }
+
+        li + li {
+            margin-top: 0.25em;
+        }
+
+        /* ── Inline code ── */
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 85%;
+            padding: 0.2em 0.4em;
+            margin: 0;
+            background-color: var(--color-neutral-muted);
+            border-radius: 6px;
+            white-space: break-spaces;
+        }
+
+        /* ── GitHub emoji images ── */
+
+        .g-emoji {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.1em;
+        }
+
+        /* ── Theme toggle ── */
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border-default);
+            background: var(--color-canvas-subtle);
+            color: var(--color-fg-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--color-fg-muted);
+            color: var(--color-fg-default);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .icon-sun { display: none; }
+        .icon-moon { display: block; }
+        [data-theme="dark"] .icon-sun { display: block; }
+        [data-theme="dark"] .icon-moon { display: none; }
+
+        /* ── Footer ── */
+
+        footer {
+            border-top: 1px solid var(--color-border-default);
+            margin-top: 32px;
+            padding-top: 16px;
+        }
+
+        footer p {
+            font-size: 12px;
+            color: var(--color-fg-muted);
+            text-align: center;
+            margin: 0;
+        }
+
+        /* ── Selection ── */
+
+        ::selection {
+            background: #0969da;
+            color: #fff;
+        }
+
+        [data-theme="dark"] ::selection {
+            background: #58a6ff;
+            color: #0d1117;
+        }
+
+        /* ── Project list styling ── */
+
+        a code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .project-desc {
+            color: var(--color-fg-muted);
+        }
+    </style>
+
+    <script>
+        (function() {
+            var saved = localStorage.getItem('theme');
+            var preferred = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', preferred);
+        })();
     </script>
 </head>
-<body class="antialiased bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-[#e2e8f0] selection:bg-sky-500 selection:text-white">
+<body>
 
-    <button onclick="toggleTheme()" class="fixed top-6 right-6 p-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-yellow-400 hover:scale-110 transition-transform z-50 shadow-md">
-        <svg class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-        <svg class="w-6 h-6 block dark:hidden text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.06a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"/></svg>
+        <svg class="icon-moon" viewBox="0 0 16 16"><path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"/></svg>
     </button>
 
-    <div class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+    <div class="markdown-body">
 
-        <header class="mb-16">
-            <h1 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900 mb-4">Hi, I'm Minhaz 👋</h1>
-            <p class="text-slate-600 dark:text-slate-400">🏗️&nbsp; Solutions Architect</p>
-            <p class="text-slate-600 dark:text-slate-400">🛠️&nbsp; Platform Engineer</p>
-        </header>
+        <h1>Hi, I'm Minhaz <img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f44b.png" alt="wave"></h1>
+        <p><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3d7.png" alt="building_construction"> Solutions Architect<br><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png" alt="hammer_and_wrench"> Platform Engineer</p>
 
-        <section class="mb-16">
-            <h2 class="text-xl font-bold dark:text-white text-slate-900 mb-6">🌎 Find me</h2>
-            <ul class="text-sm space-y-2">
-                <li>🚀&nbsp; <a href="https://mdminhazulhaque.io" class="text-sky-600 dark:text-sky-400 hover:underline">Website</a></li>
-                <li>📝&nbsp; <a href="https://blog.mdminhazulhaque.io/" class="text-sky-600 dark:text-sky-400 hover:underline">Blog</a></li>
-                <li>💼&nbsp; <a href="https://www.linkedin.com/in/mdminhazulhaque/" class="text-sky-600 dark:text-sky-400 hover:underline">LinkedIn</a></li>
-                <li>🐙&nbsp; <a href="https://github.com/mdminhazulhaque" class="text-sky-600 dark:text-sky-400 hover:underline">GitHub</a></li>
-            </ul>
-        </section>
+        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f30e.png" alt="earth_americas"> Find me</h2>
+        <ul>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f680.png" alt="rocket"> <a href="https://mdminhazulhaque.io">Website</a></li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png" alt="memo"> <a href="https://blog.mdminhazulhaque.io/">Blog</a></li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4bc.png" alt="briefcase"> <a href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a></li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f419.png" alt="octopus"> <a href="https://github.com/mdminhazulhaque">GitHub</a></li>
+        </ul>
 
-        <section class="mb-16">
-            <h2 class="text-xl font-bold dark:text-white text-slate-900 mb-6">👨‍💻 What I'm up to</h2>
-            <ul class="text-sm space-y-2">
-                <li>🧱&nbsp; Building Platforms</li>
-                <li>📐&nbsp; Architecting Solutions</li>
-                <li>🧠&nbsp; Crafting AI Products</li>
-                <li>🛡️&nbsp; Handling Security</li>
-            </ul>
-        </section>
+        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f468-1f4bb.png" alt="man_technologist"> What I'm up to</h2>
+        <ul>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f9f1.png" alt="bricks"> Building Platforms</li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d0.png" alt="triangular_ruler"> Architecting Solutions</li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f9e0.png" alt="brain"> Crafting AI Products</li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e1.png" alt="shield"> Handling Security</li>
+        </ul>
 
-        <section class="mb-16">
-            <h2 class="text-xl font-bold dark:text-white text-slate-900 mb-6">📂 Projects</h2>
-            <ul class="text-sm space-y-3">
-                {% for project in projects %}
-                <li>{{ project.emoji }}&nbsp; <a href="{{ project.url }}" target="_blank" class="text-sky-600 dark:text-sky-400 hover:underline font-mono">{{ project.name }}</a> - <span class="text-slate-600 dark:text-slate-400">{{ project.description }}</span></li>
-                {% endfor %}
-            </ul>
-        </section>
+        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4c2.png" alt="open_file_folder"> Projects</h2>
+        <ul>
+            {% for project in projects %}
+            <li>{{ project.emoji_img }} <a href="{{ project.url }}" target="_blank"><code>{{ project.name }}</code></a> — <span class="project-desc">{{ project.description }}</span></li>
+            {% endfor %}
+        </ul>
 
-        <footer class="border-t border-slate-200 dark:border-slate-800 pt-8 mt-12 mb-8">
-            <p class="text-xs text-slate-500 text-center">
-                &copy; <script>document.write(new Date().getFullYear())</script> Md Minhazul Haque.
-            </p>
+        <footer>
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Md Minhazul Haque.</p>
         </footer>
 
     </div>
+
+    <script>
+        function toggleTheme() {
+            var current = document.documentElement.getAttribute('data-theme');
+            var next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+    </script>
 </body>
 </html>
