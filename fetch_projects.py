@@ -17,6 +17,7 @@ projects = [
     "bangladeshi-parcel-tracker",
     "gcloud-cli-cheatsheet",
     "kube-git-backup",
+    "pptp-proxy",
     "probhat-macos",
     "probhat-web",
     "python-bitbucket-cli",
@@ -27,6 +28,7 @@ projects = [
     "ruet-thesis-template-latex",
     "ssh-tunnel-manager",
     "traefik-converter",
+    "uu-erp-chrome-ext",
 ]
 
 token = os.getenv("GITHUB_TOKEN")
