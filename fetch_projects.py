@@ -22,6 +22,7 @@ projects = [
     "probhat-web",
     "python-bitbucket-cli",
     "python-bpdb",
+    "python-breb",
     "python-desco",
     "python-dpdc",
     "python-nesco",
