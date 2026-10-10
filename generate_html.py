@@ -4,6 +4,7 @@ Generate index.html from Jinja2 template using projects.json data
 """
 
 import json
+from datetime import date
 from jinja2 import Template
 
 
@@ -14,7 +15,7 @@ def emoji_to_github_img(emoji):
     # Build codepoint string (hyphen-separated for multi-codepoint emoji like ZWJ sequences)
     codepoints = "-".join(f"{ord(c):x}" for c in cleaned)
     url = f"https://github.githubassets.com/images/icons/emoji/unicode/{codepoints}.png"
-    return f'<img class="g-emoji" src="{url}" alt="{emoji}">'
+    return f'<img class="g-emoji" src="{url}" alt="" width="20" height="20">'
 
 
 def render_html():
@@ -47,7 +48,7 @@ def render_html():
 
     # Render template
     template = Template(template_content)
-    rendered_html = template.render(projects=projects)
+    rendered_html = template.render(projects=projects, year=date.today().year)
 
     # Write output
     with open("index.html", "w") as f:

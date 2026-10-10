@@ -7,7 +7,8 @@
     <meta name="description" content="Platform Engineer with security expertise who builds innovative solutions and contributes to open source projects. Passionate about creating clean, efficient, and secure applications.">
     <meta name="keywords" content="Platform Engineer, Security Engineer, Cybersecurity, Cloud Security, Platform Engineering, Kubernetes, Docker, Python, JavaScript, Open Source, Infrastructure as Code, Security Architecture">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0ea5e9">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
     <meta name="google-site-verification" content="QR4wpMs0YQ9eS1V2ix6s8FJysWRIbN5_dxqFYyGUkvc">
     <meta name="generator" content="minhaz/cli" />
 
@@ -111,6 +112,7 @@
             --color-neutral-muted: rgba(175, 184, 193, 0.2);
             --font-body: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
             --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            color-scheme: light;
         }
 
         [data-theme="dark"] {
@@ -122,6 +124,7 @@
             --color-border-default: #30363d;
             --color-border-muted: hsla(215, 8%, 47%, 0.4);
             --color-neutral-muted: rgba(110, 118, 129, 0.4);
+            color-scheme: dark;
         }
 
         *, *::before, *::after {
@@ -202,6 +205,7 @@
         .hero h1 {
             margin: 0 0 8px;
             padding-bottom: 0;
+            padding-right: 44px; /* keep clear of the fixed theme toggle */
             border-bottom: none;
         }
 
@@ -352,6 +356,7 @@
         }
 
         .project-card {
+            margin: 0;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -364,7 +369,7 @@
         }
 
         .project-card:hover,
-        .project-card:focus-within {
+        .project-card:has(a:focus-visible) {
             border-color: var(--color-fg-muted);
             background: var(--color-canvas-subtle);
             transform: translateY(-2px);
@@ -388,10 +393,43 @@
             border-radius: 6px;
         }
 
+        .project-card-title a:focus-visible {
+            outline: none;
+        }
+
+        .project-card-title a:focus-visible::after {
+            outline: 2px solid var(--color-fg-accent);
+            outline-offset: 2px;
+        }
+
         .project-desc {
+            margin: 0;
             color: var(--color-fg-muted);
             font-size: 0.9em;
             line-height: 1.4;
+        }
+
+        /* ── Focus ── */
+
+        a:focus-visible,
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--color-fg-accent);
+            outline-offset: 2px;
+            border-radius: 6px;
+        }
+
+        /* ── Reduced motion ── */
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition: none !important;
+            }
+
+            .project-card:hover,
+            .project-card:has(a:focus-visible),
+            .theme-toggle:active {
+                transform: none;
+            }
         }
     </style>
 
@@ -405,55 +443,62 @@
 </head>
 <body>
 
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Dark theme">
         <svg class="icon-sun" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.06a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"/></svg>
         <svg class="icon-moon" viewBox="0 0 16 16"><path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"/></svg>
     </button>
 
     <div class="markdown-body">
 
-        <div class="hero">
-            <h1>Hi, I'm Minhaz <img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f44b.png" alt="wave"></h1>
-            <p><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3d7.png" alt="building_construction"> Solutions Architect<br><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png" alt="hammer_and_wrench"> Platform Engineer</p>
-        </div>
+        <main>
 
-        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f30e.png" alt="earth_americas"> Find me</h2>
+        <header class="hero">
+            <h1>Hi, I'm Minhaz <img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f44b.png" alt="" width="20" height="20"></h1>
+            <p><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3d7.png" alt="" width="20" height="20"> Solutions Architect<br><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png" alt="" width="20" height="20"> Platform Engineer</p>
+        </header>
+
+        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f30e.png" alt="" width="20" height="20"> Find me</h2>
         <ul>
-            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f680.png" alt="rocket"> <a href="https://mdminhazulhaque.io">Website</a></li>
-            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png" alt="memo"> <a href="https://blog.mdminhazulhaque.io/">Blog</a></li>
-            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4bc.png" alt="briefcase"> <a href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a></li>
-            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f419.png" alt="octopus"> <a href="https://github.com/mdminhazulhaque">GitHub</a></li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png" alt="" width="20" height="20"> <a href="https://blog.mdminhazulhaque.io/">Blog</a></li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4bc.png" alt="" width="20" height="20"> <a href="https://www.linkedin.com/in/mdminhazulhaque/">LinkedIn</a></li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f419.png" alt="" width="20" height="20"> <a href="https://github.com/mdminhazulhaque">GitHub</a></li>
         </ul>
 
-        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f468-1f4bb.png" alt="man_technologist"> What I'm up to</h2>
+        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f468-1f4bb.png" alt="" width="20" height="20"> What I'm up to</h2>
         <ul>
-            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f9f1.png" alt="bricks"> Building Platforms</li>
-            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d0.png" alt="triangular_ruler"> Architecting Solutions</li>
-            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f9e0.png" alt="brain"> Crafting AI Products</li>
-            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e1.png" alt="shield"> Handling Security</li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f9f1.png" alt="" width="20" height="20"> Building Platforms</li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d0.png" alt="" width="20" height="20"> Architecting Solutions</li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f9e0.png" alt="" width="20" height="20"> Crafting AI Products</li>
+            <li><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e1.png" alt="" width="20" height="20"> Handling Security</li>
         </ul>
 
-        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4c2.png" alt="open_file_folder"> Projects</h2>
-        <div class="project-grid">
+        <h2><img class="g-emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4c2.png" alt="" width="20" height="20"> Projects</h2>
+        <ul class="project-grid">
             {% for project in projects %}
-            <div class="project-card">
-                <div class="project-card-title">{{ project.emoji_img }} <a href="{{ project.url }}" target="_blank"><code>{{ project.name }}</code></a></div>
+            <li class="project-card">
+                <div class="project-card-title">{{ project.emoji_img }} <a href="{{ project.url }}" target="_blank" rel="noopener"><code>{{ project.name }}</code></a></div>
                 <p class="project-desc">{{ project.description }}</p>
-            </div>
+            </li>
             {% endfor %}
-        </div>
+        </ul>
+
+        </main>
 
         <footer>
-            <p>&copy; <script>document.write(new Date().getFullYear())</script> Md Minhazul Haque.</p>
+            <p>&copy; {{ year }} Md Minhazul Haque.</p>
         </footer>
 
     </div>
 
     <script>
+        var themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'dark');
+
         function toggleTheme() {
             var current = document.documentElement.getAttribute('data-theme');
             var next = current === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', next);
+            themeToggle.setAttribute('aria-pressed', next === 'dark');
             localStorage.setItem('theme', next);
         }
     </script>
